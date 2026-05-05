@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,9 +42,21 @@ const Navbar = () => {
           <button className="nav-icon">
             <span className="material-symbols-outlined">search</span>
           </button>
-          <Link to="/login" className="nav-icon">
-            <span className="material-symbols-outlined">person</span>
-          </Link>
+          
+          {user ? (
+            <div className="user-menu-dropdown">
+              <span className="user-name">Hi, {user.firstName}</span>
+              <button onClick={logout} className="logout-btn">
+                <span className="material-symbols-outlined">logout</span>
+                <span className="logout-text">Logout</span>
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="nav-icon">
+              <span className="material-symbols-outlined">person</span>
+            </Link>
+          )}
+          
           <button className="nav-icon cart-icon">
             <span className="material-symbols-outlined">shopping_bag</span>
             <span className="cart-count">0</span>

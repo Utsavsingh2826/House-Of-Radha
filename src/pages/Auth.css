@@ -118,3 +118,14 @@
     margin: 0 var(--spacing-md);
   }
 }
+
+.error-msg {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-align: center;
+}
