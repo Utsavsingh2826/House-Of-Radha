@@ -1,0 +1,134 @@
+.product-page {
+  padding-top: 120px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.hallmark-tag {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.filter-bar {
+  background: white;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  z-index: 100;
+}
+
+.filter-bar.sticky {
+  position: sticky;
+  top: 80px;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-btn, .sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.product-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-left: 1.5rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.product-card {
+  cursor: pointer;
+}
+
+.product-img-wrapper {
+  position: relative;
+  aspect-ratio: 1/1.2;
+  overflow: hidden;
+  background: var(--bg-soft);
+  margin-bottom: var(--spacing-sm);
+}
+
+.product-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.product-card:hover .product-img-wrapper img {
+  transform: scale(1.05);
+}
+
+.quick-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  transform: translateY(100%);
+  transition: transform var(--transition-fast);
+}
+
+.product-card:hover .quick-add {
+  transform: translateY(0);
+}
+
+.product-info {
+  text-align: center;
+}
+
+.collection-tag {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.product-info h3 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+}
+
+.price {
+  font-weight: 500;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+}
