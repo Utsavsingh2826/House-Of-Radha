@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { count } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,28 +41,31 @@ const Navbar = () => {
         </div>
 
         <div className="nav-right">
-          <button className="nav-icon">
+          <button className="nav-icon" aria-label="Search">
             <span className="material-symbols-outlined">search</span>
           </button>
-          
+
           {user ? (
             <div className="user-menu-dropdown">
-              <span className="user-name">Hi, {user.firstName}</span>
-              <button onClick={logout} className="logout-btn">
+              <Link to="/profile" className="nav-icon" aria-label="My profile" title="My profile">
+                <span className="material-symbols-outlined">person</span>
+              </Link>
+              <Link to="/profile" className="user-name">Hi, {user.firstName}</Link>
+              <button onClick={logout} className="logout-btn" aria-label="Log out">
                 <span className="material-symbols-outlined">logout</span>
                 <span className="logout-text">Logout</span>
               </button>
             </div>
           ) : (
-            <Link to="/login" className="nav-icon">
+            <Link to="/login" className="nav-icon" aria-label="Sign in">
               <span className="material-symbols-outlined">person</span>
             </Link>
           )}
-          
-          <button className="nav-icon cart-icon">
+
+          <Link to="/cart" className="nav-icon cart-icon" aria-label="Bag">
             <span className="material-symbols-outlined">shopping_bag</span>
-            <span className="cart-count">0</span>
-          </button>
+            {count > 0 && <span className="cart-count">{count}</span>}
+          </Link>
         </div>
       </div>
     </nav>

@@ -108,6 +108,13 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.user-name:hover {
+  color: var(--accent);
 }
 
 .logout-btn {

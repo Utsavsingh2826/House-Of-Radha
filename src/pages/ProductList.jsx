@@ -1,50 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useMemo, useEffect, useState } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { api } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { requireAuth } from '../lib/requireAuth';
 import './ProductList.css';
+
+const CATEGORY_TITLES = {
+  women: { title: "Women's Jewellery", subtitle: 'Hand-finished pieces, designed to be worn every day' },
+  men: { title: "Men's Fashion", subtitle: 'Premium silver kadas, bracelets and statement pieces' },
+  collections: { title: 'All Collections', subtitle: 'The complete House of Radha edit' },
+  dainty: { title: 'The Dainty & Modern', subtitle: 'Office wear, party, mostly diamonds' },
+  temple: { title: 'The Temple Jewelry', subtitle: 'Brides, festive shoppers, traditionalists' },
+  fusion: { title: 'The Fusion Collection', subtitle: 'Oxidized & Ethnic Silver' },
+};
+
+const filterByRoute = (id, products) => {
+  const available = products.filter((p) => p.available);
+  if (!id) return available;
+  switch (id) {
+    case 'women':
+      return available.filter((p) => p.gender === 'female');
+    case 'men':
+      return available.filter((p) => p.gender === 'male');
+    case 'collections':
+      return available;
+    default:
+      return available;
+  }
+};
 
 const ProductList = () => {
   const { id } = useParams();
-  const [products, setProducts] = useState([]);
-  const [categoryTitle, setCategoryTitle] = useState('Our Collection');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
+  const { addToCart, loading: cartLoading } = useCart();
 
-  const allProducts = [
-    // Women - Dainty
-    { id: 1, name: 'Chain with Pendant', category: 'dainty', price: '₹2,499', image: 'https://images.unsplash.com/photo-1599643478123-242f15110cb1?auto=format&fit=crop&q=80&w=600', collection: 'The Dainty & Modern' },
-    { id: 2, name: 'Floating Solitaire', category: 'dainty', price: '₹4,999', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=600', collection: 'The Dainty & Modern' },
-    { id: 3, name: 'Stackable Band', category: 'dainty', price: '₹1,299', image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600', collection: 'The Dainty & Modern' },
-    
-    // Temple Jewelry
-    { id: 4, name: 'Guttapusalu Necklace', category: 'temple', price: '₹12,499', image: 'https://images.unsplash.com/photo-1599643478123-242f15110cb1?auto=format&fit=crop&q=80&w=600', collection: 'The Temple Jewelry' },
-    { id: 5, name: 'Lakshmi Choker', category: 'temple', price: '₹8,999', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=600', collection: 'The Temple Jewelry' },
-    { id: 6, name: 'Traditional Jhumkas', category: 'temple', price: '₹3,499', image: 'https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&q=80&w=600', collection: 'The Temple Jewelry' },
+  const [allProducts, setAllProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
-    // Fusion
-    { id: 7, name: 'Hasli Necklace', category: 'fusion', price: '₹5,499', image: 'https://images.unsplash.com/photo-1535633302703-942091448a52?auto=format&fit=crop&q=80&w=600', collection: 'The Fusion Collection' },
-    { id: 8, name: 'Mandala Pendant Set', category: 'fusion', price: '₹2,999', image: 'https://images.unsplash.com/photo-1535633302703-942091448a52?auto=format&fit=crop&q=80&w=600', collection: 'The Fusion Collection' },
-    
-    // Men
-    { id: 9, name: 'Hanuman Chalisa Kada', category: 'men', price: '₹3,999', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', collection: "Men's Fashion" },
-    { id: 10, name: 'Premium Brooch', category: 'men', price: '₹2,499', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', collection: "Men's Fashion" },
-  ];
+  const products = useMemo(
+    () => filterByRoute(id, allProducts),
+    [id, allProducts]
+  );
+  const meta = CATEGORY_TITLES[id] ?? { title: 'All Jewellery', subtitle: '925 silver hallmarked' };
+
+  // Per-card transient toast: { sku, message }.
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    if (id) {
-      setProducts(allProducts.filter(p => p.category === id));
-      const titles = {
-        dainty: 'The Dainty & Modern Collection',
-        temple: 'The Temple Jewelry Collection',
-        fusion: 'The Fusion Collection',
-        men: "Men's Fashion",
-        women: "Women's Jewelry"
-      };
-      setCategoryTitle(titles[id] || 'Our Collection');
-    } else {
-      setProducts(allProducts);
-      setCategoryTitle('All Jewellery');
-    }
     window.scrollTo(0, 0);
   }, [id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoadingProducts(true);
+    setFetchError(null);
+    api('/api/products', { auth: false })
+      .then((res) => {
+        if (cancelled) return;
+        setAllProducts(Array.isArray(res?.data) ? res.data : []);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setFetchError(err.message || 'Failed to load products');
+        setAllProducts([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingProducts(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 1600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  const handleAddToCart = async (e, sku) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      requireAuth(navigate, location, { action: 'addToCart', sku });
+      return;
+    }
+    const result = await addToCart(sku, 1);
+    setToast({
+      sku,
+      message: result.success ? 'Added to bag' : (result.error || 'Failed'),
+    });
+  };
+
+  const handleBuyNow = (e, sku) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      requireAuth(navigate, location, { action: 'buyNow', sku });
+      return;
+    }
+    navigate(`/checkout?buyNow=${encodeURIComponent(sku)}&qty=1`);
+  };
 
   return (
     <div className="product-page">
@@ -52,10 +113,11 @@ const ProductList = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          key={categoryTitle}
+          key={meta.title}
         >
-          {categoryTitle}
+          {meta.title}
         </motion.h1>
+        <p className="page-subtitle">{meta.subtitle}</p>
         <p className="hallmark-tag">925 Silver Hallmarked</p>
       </header>
 
@@ -76,27 +138,77 @@ const ProductList = () => {
       </div>
 
       <div className="container section">
-        <div className="product-grid">
-          {products.map((product, index) => (
-            <motion.div 
-              key={product.id}
-              className="product-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <div className="product-img-wrapper">
-                <img src={product.image} alt={product.name} />
-                <button className="quick-add">Quick Add</button>
-              </div>
-              <div className="product-info">
-                <span className="collection-tag">{product.collection}</span>
-                <h3>{product.name}</h3>
-                <p className="price">{product.price}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {loadingProducts ? (
+          <p className="empty-state">Loading products...</p>
+        ) : fetchError ? (
+          <p className="empty-state">Could not load products: {fetchError}</p>
+        ) : products.length === 0 ? (
+          <p className="empty-state">No products available in this category yet.</p>
+        ) : (
+          <div className="product-grid">
+            {products.map((product, index) => (
+              <motion.article
+                key={product.sku}
+                className="product-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <div className="product-img-wrapper">
+                  <img src={product.image} alt={product.name} loading="lazy" />
+                  {Array.isArray(product.images) && product.images.length > 1 && product.images[1] && (
+                    <img
+                      src={product.images[1]}
+                      alt=""
+                      aria-hidden="true"
+                      className="product-img-alt"
+                      loading="lazy"
+                    />
+                  )}
+
+                  <div className="card-cta">
+                    <button
+                      type="button"
+                      className="add-cart-btn"
+                      disabled={cartLoading}
+                      onClick={(e) => handleAddToCart(e, product.sku)}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      type="button"
+                      className="buy-now-btn"
+                      onClick={(e) => handleBuyNow(e, product.sku)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+
+                  {toast && toast.sku === product.sku && (
+                    <span className="card-toast">{toast.message}</span>
+                  )}
+
+                  {product.subcategory && product.subcategory !== 'Band Bracelet' && (
+                    <span className="product-tag">{product.subcategory}</span>
+                  )}
+                </div>
+                <div className="product-info">
+                  <span className="collection-tag">
+                    {product.gender === 'female' ? 'Women' : product.gender === 'male' ? 'Men' : 'Unisex'} &middot; {product.category}
+                  </span>
+                  <h3>{product.name}</h3>
+                  <div className="product-meta-row">
+                    <span className="price">{product.priceDisplay}</span>
+                    {product.weightLabel && (
+                      <span className="weight">{product.weightLabel}</span>
+                    )}
+                  </div>
+                  <span className="product-sku">{product.sku}</span>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
