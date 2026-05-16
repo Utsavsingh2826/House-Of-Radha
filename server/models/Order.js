@@ -19,7 +19,7 @@ const ShippingAddressSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: true,
-      match: [/^[6-9]\d{9}$/, 'Please add a valid 10-digit phone'],
+      match: [/^\d{10}$/, 'Please add a valid 10-digit phone'],
     },
     line1: { type: String, required: true, trim: true },
     line2: { type: String, default: '', trim: true },

@@ -125,6 +125,7 @@ const OrderSuccess = () => {
 
           <div className="success-actions">
             <Link to="/category/collections" className="btn btn-primary">Continue Shopping</Link>
+            <Link to="/orders" className="btn-link">My Orders</Link>
             <Link to="/profile" className="btn-link">View Profile</Link>
           </div>
         </motion.div>

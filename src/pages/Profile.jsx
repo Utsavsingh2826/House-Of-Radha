@@ -41,13 +41,13 @@ const Profile = () => {
     setForm({
       firstName: user.firstName || '',
       lastName: user.lastName || '',
-      phone: user.phone || '',
+      phone: String(user.phone || '').replace(/\D/g, '').slice(0, 10),
       address: {
         line1: user.address?.line1 || '',
         line2: user.address?.line2 || '',
         city: user.address?.city || '',
         state: user.address?.state || '',
-        pincode: user.address?.pincode || '',
+        pincode: String(user.address?.pincode || '').replace(/\D/g, '').slice(0, 6),
         country: user.address?.country || 'India',
       },
     });
@@ -57,14 +57,21 @@ const Profile = () => {
     return <div className="profile-page"><div className="container">Loading...</div></div>;
   }
 
+  // Auto-strip non-digits + cap length for phone so users can paste/type
+  // spaces or dashes without tripping validation.
+  const sanitizePhone = (v) => String(v || '').replace(/\D/g, '').slice(0, 10);
+  const sanitizePincode = (v) => String(v || '').replace(/\D/g, '').slice(0, 6);
+
   const handleChange = (field, value) => {
-    setForm({ ...form, [field]: value });
+    const next = field === 'phone' ? sanitizePhone(value) : value;
+    setForm({ ...form, [field]: next });
     setFieldErrors({ ...fieldErrors, [field]: undefined });
     setSuccess(false);
   };
 
   const handleAddressChange = (field, value) => {
-    setForm({ ...form, address: { ...form.address, [field]: value } });
+    const next = field === 'pincode' ? sanitizePincode(value) : value;
+    setForm({ ...form, address: { ...form.address, [field]: next } });
     setFieldErrors({ ...fieldErrors, [field]: undefined });
     setSuccess(false);
   };
@@ -73,8 +80,8 @@ const Profile = () => {
     const errs = {};
     if (!form.firstName.trim()) errs.firstName = 'First name is required';
     if (!form.lastName.trim()) errs.lastName = 'Last name is required';
-    if (form.phone && !/^[6-9]\d{9}$/.test(form.phone)) {
-      errs.phone = 'Enter a valid 10-digit Indian mobile number';
+    if (form.phone && !/^\d{10}$/.test(form.phone)) {
+      errs.phone = 'Enter a valid 10-digit phone number';
     }
     if (form.address.pincode && !/^\d{6}$/.test(form.address.pincode)) {
       errs.pincode = 'Enter a valid 6-digit pincode';
@@ -238,6 +245,7 @@ const Profile = () => {
               <button type="submit" className="btn btn-primary" disabled={saving}>
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
+              <Link to="/orders" className="btn-link">My Orders</Link>
               <Link to="/cart" className="btn-link">View Bag</Link>
             </div>
           </form>

@@ -51,20 +51,22 @@ function validateShipping(addr) {
       throw Object.assign(new Error(`shippingAddress.${f} is required`), { status: 400 });
     }
   }
-  if (!/^[6-9]\d{9}$/.test(String(addr.phone))) {
-    throw Object.assign(new Error('Invalid phone number'), { status: 400 });
+  const phoneDigits = String(addr.phone).replace(/\D/g, '');
+  if (!/^\d{10}$/.test(phoneDigits)) {
+    throw Object.assign(new Error('Invalid phone number — must be 10 digits'), { status: 400 });
   }
-  if (!/^\d{6}$/.test(String(addr.pincode))) {
+  const pincodeDigits = String(addr.pincode).replace(/\D/g, '');
+  if (!/^\d{6}$/.test(pincodeDigits)) {
     throw Object.assign(new Error('Invalid pincode'), { status: 400 });
   }
   return {
     fullName: String(addr.fullName).trim(),
-    phone: String(addr.phone).trim(),
+    phone: phoneDigits,
     line1: String(addr.line1).trim(),
     line2: String(addr.line2 || '').trim(),
     city: String(addr.city).trim(),
     state: String(addr.state).trim(),
-    pincode: String(addr.pincode).trim(),
+    pincode: pincodeDigits,
     country: String(addr.country || 'India').trim(),
   };
 }
@@ -237,5 +239,35 @@ exports.getOrder = async (req, res) => {
     return res.status(200).json({ success: true, data: order });
   } catch (err) {
     return res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// GET /api/orders?status=paid|created|failed|cancelled&limit=20
+// Returns the current user's orders, newest first. Used by the "My Orders" page.
+exports.listMyOrders = async (req, res) => {
+  try {
+    const filter = { user: req.user.id };
+
+    if (req.query.status) {
+      const s = String(req.query.status).toLowerCase();
+      if (['created', 'paid', 'failed', 'cancelled'].includes(s)) filter.status = s;
+    }
+
+    let limit = parseInt(req.query.limit, 10);
+    if (!Number.isFinite(limit) || limit < 1) limit = 50;
+    if (limit > 100) limit = 100;
+
+    const orders = await Order.find(filter)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      count: orders.length,
+      data: orders,
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
   }
 };

@@ -118,14 +118,21 @@ exports.updateMe = async (req, res) => {
       }
     }
 
+    // Normalise phone — strip everything except digits so callers can send
+    // "93216 36155" or "+91 9876543210" and we store the canonical 10-digit form.
+    if (typeof patch.phone === 'string') {
+      patch.phone = patch.phone.replace(/\D/g, '');
+    }
+
     // Address is a nested doc — replace the whole subdoc so removed fields clear.
     if (patch.address && typeof patch.address === 'object') {
+      const rawPin = String(patch.address.pincode || '');
       patch.address = {
         line1: patch.address.line1 || '',
         line2: patch.address.line2 || '',
         city: patch.address.city || '',
         state: patch.address.state || '',
-        pincode: patch.address.pincode || '',
+        pincode: rawPin.replace(/\D/g, ''),
         country: patch.address.country || 'India',
       };
     }

@@ -6,7 +6,8 @@
     "start": "node index.js",
     "dev": "node index.js",
     "test": "jest --runInBand",
-    "seed:products": "node scripts/seed-products.js"
+    "seed:products": "node scripts/seed-products.js",
+    "seed:orders": "node scripts/seed-orders.js"
   },
   "keywords": [],
   "author": "",

@@ -67,7 +67,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: '',
     validate: {
-      validator: (v) => v === '' || /^[6-9]\d{9}$/.test(v),
+      validator: (v) => v === '' || /^\d{10}$/.test(v),
       message: 'Please add a valid 10-digit phone',
     },
   },

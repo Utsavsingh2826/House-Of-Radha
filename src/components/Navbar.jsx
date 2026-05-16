@@ -51,6 +51,9 @@ const Navbar = () => {
                 <span className="material-symbols-outlined">person</span>
               </Link>
               <Link to="/profile" className="user-name">Hi, {user.firstName}</Link>
+              <Link to="/orders" className="nav-icon" aria-label="My orders" title="My orders">
+                <span className="material-symbols-outlined">receipt_long</span>
+              </Link>
               <button onClick={logout} className="logout-btn" aria-label="Log out">
                 <span className="material-symbols-outlined">logout</span>
                 <span className="logout-text">Logout</span>

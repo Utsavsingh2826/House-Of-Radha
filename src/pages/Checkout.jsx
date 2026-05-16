@@ -88,18 +88,23 @@ const Checkout = () => {
     }
   }, [authLoading, user, navigate, location]);
 
-  // Pre-fill from saved profile.
+  // Pre-fill from saved profile. Normalise phone/pincode in case the saved
+  // value had spaces or other formatting, so validation passes immediately.
   useEffect(() => {
     if (!user) return;
     setShipping((prev) => ({
       ...prev,
       fullName: prev.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-      phone: prev.phone || user.phone || '',
+      phone:
+        prev.phone ||
+        String(user.phone || '').replace(/\D/g, '').slice(0, 10),
       line1: prev.line1 || user.address?.line1 || '',
       line2: prev.line2 || user.address?.line2 || '',
       city: prev.city || user.address?.city || '',
       state: prev.state || user.address?.state || '',
-      pincode: prev.pincode || user.address?.pincode || '',
+      pincode:
+        prev.pincode ||
+        String(user.address?.pincode || '').replace(/\D/g, '').slice(0, 6),
       country: prev.country || user.address?.country || 'India',
     }));
     // Default "save as default" ON when there's no saved address yet.
@@ -136,14 +141,24 @@ const Checkout = () => {
     );
   }
 
+  // Strip non-digits and cap length for phone/pincode so the visible value
+  // always matches what the regex validates against. Avoids the "I typed
+  // a space and got rejected" gotcha.
   const handleChange = (e) => {
-    setShipping({ ...shipping, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let next = value;
+    if (name === 'phone') {
+      next = value.replace(/\D/g, '').slice(0, 10);
+    } else if (name === 'pincode') {
+      next = value.replace(/\D/g, '').slice(0, 6);
+    }
+    setShipping({ ...shipping, [name]: next });
   };
 
   const validate = () => {
     if (!shipping.fullName.trim()) return 'Full name is required';
-    if (!/^[6-9]\d{9}$/.test(shipping.phone))
-      return 'Enter a valid 10-digit Indian mobile number';
+    if (!/^\d{10}$/.test(shipping.phone))
+      return 'Enter a valid 10-digit phone number';
     if (!shipping.line1.trim()) return 'Address line 1 is required';
     if (!shipping.city.trim()) return 'City is required';
     if (!shipping.state.trim()) return 'State is required';
@@ -252,7 +267,8 @@ const Checkout = () => {
                   value={shipping.phone}
                   onChange={handleChange}
                   inputMode="numeric"
-                  pattern="[6-9][0-9]{9}"
+                  pattern="[0-9]{10}"
+                  maxLength={10}
                   placeholder="10-digit mobile"
                   required
                 />

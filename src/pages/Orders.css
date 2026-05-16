@@ -1,0 +1,296 @@
+.orders-page {
+  padding: 100px 0 80px;
+  min-height: 70vh;
+  background: linear-gradient(180deg, #fdfaf6 0%, #fff 100%);
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(26, 42, 79, 0.1);
+}
+
+.orders-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  color: #1a2a4f;
+  margin: 0;
+}
+
+.orders-subtitle {
+  color: #6b6f76;
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+}
+
+.btn-link {
+  color: #1a2a4f;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.btn-link:hover { text-decoration: underline; }
+
+.orders-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 20px;
+}
+
+.orders-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 42, 79, 0.18);
+  background: #fff;
+  color: #1a2a4f;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.18s ease;
+}
+.orders-filter-chip:hover { background: #f4eee4; }
+.orders-filter-chip.active {
+  background: #1a2a4f;
+  color: #fdfaf6;
+  border-color: #1a2a4f;
+}
+.chip-count {
+  background: rgba(255,255,255,0.18);
+  color: inherit;
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.orders-filter-chip:not(.active) .chip-count {
+  background: rgba(26, 42, 79, 0.08);
+}
+
+.orders-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-card {
+  background: #fff;
+  border: 1px solid rgba(26, 42, 79, 0.08);
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 14px rgba(26, 42, 79, 0.04);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.order-card:hover {
+  box-shadow: 0 6px 24px rgba(26, 42, 79, 0.1);
+}
+
+.order-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(26, 42, 79, 0.1);
+}
+
+.order-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.order-id-label {
+  font-weight: 600;
+  color: #1a2a4f;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+}
+
+.order-date {
+  color: #82858c;
+  font-size: 0.82rem;
+}
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.status-paid {
+  background: rgba(40, 167, 69, 0.12);
+  color: #1e7a3a;
+}
+.status-created {
+  background: rgba(255, 159, 28, 0.14);
+  color: #b66a00;
+}
+.status-failed {
+  background: rgba(220, 53, 69, 0.12);
+  color: #aa1d2d;
+}
+.status-cancelled {
+  background: rgba(108, 117, 125, 0.16);
+  color: #4a4f56;
+}
+
+.order-card-body {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.order-thumbs {
+  display: flex;
+  gap: 8px;
+}
+
+.order-thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f4eee4;
+  border: 1px solid rgba(26, 42, 79, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.order-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.order-thumb-placeholder {
+  font-weight: 600;
+  color: #1a2a4f;
+  font-size: 0.85rem;
+}
+.order-thumb-qty {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(26, 42, 79, 0.9);
+  color: #fdfaf6;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+.order-thumb.more {
+  background: rgba(26, 42, 79, 0.08);
+  color: #1a2a4f;
+  font-weight: 600;
+}
+
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.order-items-line {
+  font-size: 0.9rem;
+  color: #1a2a4f;
+  margin: 0;
+}
+.muted { color: #82858c; }
+.order-first-name {
+  margin: 0;
+  font-weight: 500;
+  color: #1a2a4f;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.order-ship {
+  margin: 0;
+  color: #82858c;
+  font-size: 0.82rem;
+}
+
+.order-card-totals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  text-align: right;
+}
+.order-total-label {
+  font-size: 0.78rem;
+  color: #82858c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.order-total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1a2a4f;
+  line-height: 1;
+}
+.order-view-btn {
+  margin-top: 4px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.orders-empty,
+.orders-empty-card {
+  text-align: center;
+  padding: 50px 20px;
+  color: #6b6f76;
+}
+.orders-empty.error {
+  color: #aa1d2d;
+}
+.orders-empty-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(26, 42, 79, 0.08);
+  margin-top: 12px;
+}
+.orders-empty-card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  color: #1a2a4f;
+  margin-bottom: 8px;
+}
+.orders-empty-card p {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 700px) {
+  .order-card-body {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .order-card-totals {
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .order-total-label { order: 1; }
+  .order-total { order: 2; }
+  .order-view-btn { order: 3; margin-left: auto; }
+  .orders-header h1 { font-size: 2rem; }
+}
