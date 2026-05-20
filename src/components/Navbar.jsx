@@ -47,6 +47,12 @@ const Navbar = () => {
 
           {user ? (
             <div className="user-menu-dropdown">
+              {user.role === 'admin' && (
+                <Link to="/admin/dashboard" className="admin-nav-link" title="Admin Dashboard" style={{ marginRight: '1rem', color: 'var(--primary)', fontWeight: '500', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>dashboard</span>
+                  Dashboard
+                </Link>
+              )}
               <Link to="/profile" className="nav-icon" aria-label="My profile" title="My profile">
                 <span className="material-symbols-outlined">person</span>
               </Link>

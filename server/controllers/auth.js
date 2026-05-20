@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/User');
+const AdminUser = require('../models/AdminUser');
 const jwt = require('jsonwebtoken');
 const { sendEmail, isSmtpConfigured, resetPasswordTemplate } = require('../utils/sendEmail');
 
@@ -237,5 +238,118 @@ exports.resetPassword = async (req, res) => {
     return sendTokenResponse(user, 200, res);
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+// @desc    Admin login with brute-force lock protection
+// @route   POST /api/auth/admin-login
+// @access  Public
+exports.adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Please provide an email and password' });
+    }
+
+    const admin = await AdminUser.findOne({ email }).select('+password');
+
+    if (!admin) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+
+    // Check if account is locked
+    if (admin.isLocked()) {
+      const timeLeft = Math.ceil((admin.lockUntil - Date.now()) / 1000 / 60); // minutes
+      return res.status(423).json({
+        success: false,
+        error: `Account is locked. Please try again after ${timeLeft} minute(s).`,
+        isLocked: true,
+      });
+    }
+
+    const isMatch = await admin.matchPassword(password);
+
+    if (!isMatch) {
+      admin.loginAttempts += 1;
+      let errorMsg = 'Invalid credentials';
+      let isLocked = false;
+
+      if (admin.loginAttempts >= 3) {
+        admin.lockUntil = Date.now() + 15 * 60 * 1000; // 15 mins lock
+        errorMsg = 'Account locked due to 3 failed attempts. Please wait 15 minutes.';
+        isLocked = true;
+      } else {
+        const remaining = 3 - admin.loginAttempts;
+        errorMsg = `Invalid credentials. ${remaining} attempt(s) remaining before lock.`;
+      }
+
+      await admin.save();
+      return res.status(401).json({ success: false, error: errorMsg, isLocked, remainingAttempts: 3 - admin.loginAttempts });
+    }
+
+    // Reset login attempts on success
+    admin.loginAttempts = 0;
+    admin.lockUntil = undefined;
+    await admin.save();
+
+    sendTokenResponse(admin, 200, res);
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    });
+  }
+};
+
+// @desc    Admin create user (regular or admin)
+// @route   POST /api/auth/admin-create-user
+// @access  Private/Admin
+exports.adminCreateUser = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, role } = req.body;
+
+    if (!firstName || !lastName || !email || !password || !role) {
+      return res.status(400).json({ success: false, error: 'Please provide all required fields' });
+    }
+
+    if (role === 'admin') {
+      const existing = await AdminUser.findOne({ email });
+      if (existing) {
+        return res.status(400).json({ success: false, error: 'Email already registered as admin' });
+      }
+
+      const admin = await AdminUser.create({ firstName, lastName, email, password });
+      return res.status(201).json({ success: true, data: publicUser(admin) });
+    } else {
+      const existing = await User.findOne({ email });
+      if (existing) {
+        return res.status(400).json({ success: false, error: 'Email already registered' });
+      }
+
+      const user = await User.create({ firstName, lastName, email, password });
+      return res.status(201).json({ success: true, data: publicUser(user) });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// @desc    Admin list all users
+// @route   GET /api/auth/admin-users
+// @access  Private/Admin
+exports.adminListUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    const admins = await AdminUser.find({});
+
+    const allUsers = [
+      ...users.map(u => ({ ...publicUser(u), role: 'user' })),
+      ...admins.map(a => ({ ...publicUser(a), role: 'admin' })),
+    ];
+
+    res.status(200).json({ success: true, count: allUsers.length, data: allUsers });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
   }
 };

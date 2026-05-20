@@ -13,6 +13,9 @@ import Orders from './pages/Orders';
 import Profile from './pages/Profile';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import './index.css';
@@ -38,6 +41,8 @@ function App() {
                 <Route path="/order/success/:id" element={<OrderSuccess />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/adminNikanki" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
               </Routes>
             </main>
             <Footer />

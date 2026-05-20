@@ -86,6 +86,31 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const adminLogin = async (email, password) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE}/api/auth/admin-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        setUser(data.user);
+        return { success: true };
+      } else {
+        setError(data.error);
+        return { success: false, error: data.error };
+      }
+    } catch (err) {
+      setError('Connection error');
+      return { success: false, error: 'Connection error' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
@@ -144,6 +169,7 @@ export const AuthProvider = ({ children }) => {
         error,
         register,
         login,
+        adminLogin,
         logout,
         updateProfile,
         forgotPassword,
