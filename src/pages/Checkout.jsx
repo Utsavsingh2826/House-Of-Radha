@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { api } from '../lib/api';
 import { loadRazorpay } from '../lib/razorpay';
 import { requireAuth } from '../lib/requireAuth';
+import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './Checkout.css';
 
 const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
@@ -337,7 +338,7 @@ const Checkout = () => {
               {lineItems.map((item) => (
                 <div className="summary-line" key={item.sku}>
                   <div className="summary-line-img">
-                    {item.image ? <img src={item.image} alt={item.name} /> : null}
+                    {item.image ? <img src={getOptimizedImageUrl(item.image, 120, 120)} alt={item.name} /> : null}
                   </div>
                   <div className="summary-line-info">
                     <h4>{item.name}</h4>

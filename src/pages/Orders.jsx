@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 import { requireAuth } from '../lib/requireAuth';
+import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './Orders.css';
 
 const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
@@ -163,7 +164,7 @@ const Orders = () => {
                       {preview.map((it) => (
                         <div className="order-thumb" key={it.sku}>
                           {it.image ? (
-                            <img src={it.image} alt={it.name} loading="lazy" />
+                            <img src={getOptimizedImageUrl(it.image, 100, 100)} alt={it.name} loading="lazy" />
                           ) : (
                             <div className="order-thumb-placeholder">{it.sku.slice(0, 2)}</div>
                           )}

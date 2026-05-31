@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { requireAuth } from '../lib/requireAuth';
+import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './Cart.css';
 
 const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
@@ -57,7 +58,7 @@ const Cart = () => {
                     layout
                   >
                     <div className="cart-line-img">
-                      {item.image ? <img src={item.image} alt={item.name} /> : null}
+                      {item.image ? <img src={getOptimizedImageUrl(item.image, 120, 120)} alt={item.name} /> : null}
                     </div>
                     <div className="cart-line-info">
                       <h3>{item.name}</h3>

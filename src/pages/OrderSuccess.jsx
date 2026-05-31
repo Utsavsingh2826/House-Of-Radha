@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 import { requireAuth } from '../lib/requireAuth';
+import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './OrderSuccess.css';
 
 const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
@@ -101,7 +102,7 @@ const OrderSuccess = () => {
               {order.items.map((it) => (
                 <li key={it.sku}>
                   <div className="success-line-img">
-                    {it.image ? <img src={it.image} alt={it.name} /> : null}
+                    {it.image ? <img src={getOptimizedImageUrl(it.image, 120, 120)} alt={it.name} /> : null}
                   </div>
                   <div className="success-line-info">
                     <h4>{it.name}</h4>

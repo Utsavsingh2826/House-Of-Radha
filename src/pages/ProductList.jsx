@@ -5,6 +5,7 @@ import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { requireAuth } from '../lib/requireAuth';
+import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './ProductList.css';
 
 const CATEGORY_TITLES = {
@@ -155,10 +156,10 @@ const ProductList = () => {
                 transition={{ delay: index * 0.05 }}
               >
                 <div className="product-img-wrapper">
-                  <img src={product.image} alt={product.name} loading="lazy" />
+                  <img src={getOptimizedImageUrl(product.image, 500, 500)} alt={product.name} loading="lazy" />
                   {Array.isArray(product.images) && product.images.length > 1 && product.images[1] && (
                     <img
-                      src={product.images[1]}
+                      src={getOptimizedImageUrl(product.images[1], 500, 500)}
                       alt=""
                       aria-hidden="true"
                       className="product-img-alt"
