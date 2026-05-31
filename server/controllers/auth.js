@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
   }
 };
 
-// Public user shape — never leaks the password hash or reset-token internals.
+// Public regular user shape — never leaks the password hash or reset-token internals.
 const publicUser = (user) => ({
   id: user._id,
   firstName: user.firstName,
@@ -69,6 +69,16 @@ const publicUser = (user) => ({
   address: user.address || {},
   role: user.role,
   createdAt: user.createdAt,
+});
+
+// Public admin user shape — only essential admin fields
+const publicAdminUser = (admin) => ({
+  id: admin._id,
+  firstName: admin.firstName,
+  lastName: admin.lastName,
+  email: admin.email,
+  role: admin.role,
+  createdAt: admin.createdAt,
 });
 
 const sendTokenResponse = (user, statusCode, res) => {
@@ -275,17 +285,17 @@ exports.adminLogin = async (req, res) => {
       let errorMsg = 'Invalid credentials';
       let isLocked = false;
 
-      if (admin.loginAttempts >= 3) {
+      if (admin.loginAttempts >= 5) {
         admin.lockUntil = Date.now() + 15 * 60 * 1000; // 15 mins lock
-        errorMsg = 'Account locked due to 3 failed attempts. Please wait 15 minutes.';
+        errorMsg = 'Account locked due to 5 failed attempts. Please wait 15 minutes.';
         isLocked = true;
       } else {
-        const remaining = 3 - admin.loginAttempts;
+        const remaining = 5 - admin.loginAttempts;
         errorMsg = `Invalid credentials. ${remaining} attempt(s) remaining before lock.`;
       }
 
       await admin.save();
-      return res.status(401).json({ success: false, error: errorMsg, isLocked, remainingAttempts: 3 - admin.loginAttempts });
+      return res.status(401).json({ success: false, error: errorMsg, isLocked, remainingAttempts: 5 - admin.loginAttempts });
     }
 
     // Reset login attempts on success
@@ -293,7 +303,28 @@ exports.adminLogin = async (req, res) => {
     admin.lockUntil = undefined;
     await admin.save();
 
-    sendTokenResponse(admin, 200, res);
+    // Send admin-specific token response
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE
+    });
+
+    const options = {
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      httpOnly: true
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+      options.secure = true;
+    }
+
+    res
+      .status(200)
+      .cookie('token', token, options)
+      .json({
+        success: true,
+        token,
+        user: publicAdminUser(admin),
+      });
   } catch (err) {
     res.status(400).json({
       success: false,

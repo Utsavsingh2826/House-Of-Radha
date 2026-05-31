@@ -97,10 +97,10 @@ const AdminLogin = () => {
       setFailedAttempts(newAttempts);
       localStorage.setItem('admin_failed_attempts', newAttempts.toString());
 
-      if (newAttempts >= 3) {
+      if (newAttempts >= 5) {
         triggerLock();
       } else {
-        const remaining = 3 - newAttempts;
+        const remaining = 5 - newAttempts;
         setLocalError(`${result.error || 'Invalid credentials'}. ${remaining} attempt(s) remaining before page lock.`);
       }
     }
