@@ -1,4 +1,6 @@
 const Product = require('../models/Product');
+const PricingConfig = require('../models/PricingConfig');
+const { calculateDynamicPrice } = require('../utils/pricing');
 const cloudinary = require('cloudinary').v2;
 
 // Configure Cloudinary if credentials are provided in env
@@ -10,10 +12,40 @@ if (process.env.CLOUDINARY_CLOUD_NAME) {
   });
 }
 
+const formatCurrency = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
+
+const getOrCreatePricingConfig = async () => {
+  let config = await PricingConfig.findOne({ name: 'default' });
+  if (!config) {
+    config = await PricingConfig.create({ name: 'default' });
+  }
+  return config;
+};
+
+const buildPricingSnapshot = (product, pricingConfig) => {
+  const basePriceAmount = Number(product?.basePriceAmount ?? product?.priceAmount ?? 0);
+  const priceAmount = calculateDynamicPrice({
+    basePriceAmount,
+    weightGrams: product?.weight ?? 0,
+    currentSilverRate: pricingConfig?.currentSilverRate ?? 225,
+    baseSilverRate: pricingConfig?.baseSilverRate ?? 225,
+    silverRateChangeThreshold: pricingConfig?.silverRateChangeThreshold ?? 275,
+    silverRateStep: pricingConfig?.silverRateStep ?? 25,
+    priceStepAmount: pricingConfig?.priceStepAmount ?? 25,
+  });
+
+  return {
+    priceAmount,
+    priceDisplay: formatCurrency(priceAmount),
+  };
+};
+
 // Drop the MongoDB-internal __v field and rename _id → id so the JSON the
 // frontend sees matches the previous `src/data/products.json` shape closely.
-const toClient = (doc) => {
+const toClient = (doc, pricingConfig) => {
   const obj = doc.toObject ? doc.toObject() : doc;
+  const pricing = buildPricingSnapshot(obj, pricingConfig);
+
   return {
     id: String(obj._id),
     sku: obj.sku,
@@ -25,8 +57,9 @@ const toClient = (doc) => {
     weight: obj.weight,
     weightLabel: obj.weightLabel,
     priceRaw: obj.priceRaw,
-    priceAmount: obj.priceAmount,
-    priceDisplay: obj.priceDisplay,
+    basePriceAmount: obj.basePriceAmount ?? obj.priceAmount ?? 0,
+    priceAmount: pricing.priceAmount,
+    priceDisplay: pricing.priceDisplay,
     description: obj.description,
     keywords: obj.keywords,
     image: obj.image,
@@ -40,6 +73,7 @@ const toClient = (doc) => {
 exports.listProducts = async (req, res) => {
   try {
     const filter = {};
+    const pricingConfig = await getOrCreatePricingConfig();
 
     // Filter by availability unless admins request all products
     if (req.query.all !== 'true') {
@@ -59,10 +93,13 @@ exports.listProducts = async (req, res) => {
     }
 
     const products = await Product.find(filter).sort({ sku: 1 });
+    const clientProducts = products
+      .map((product) => toClient(product, pricingConfig))
+      .filter((product) => Number(product.priceAmount) > 0);
     return res.status(200).json({
       success: true,
-      count: products.length,
-      data: products.map(toClient),
+      count: clientProducts.length,
+      data: clientProducts,
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
@@ -74,10 +111,43 @@ exports.getProductBySku = async (req, res) => {
   try {
     const sku = String(req.params.sku || '').toUpperCase();
     const product = await Product.findOne({ sku });
+    const pricingConfig = await getOrCreatePricingConfig();
+
     if (!product) {
       return res.status(404).json({ success: false, error: 'Product not found' });
     }
-    return res.status(200).json({ success: true, data: toClient(product) });
+    return res.status(200).json({ success: true, data: toClient(product, pricingConfig) });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getPricingConfig = async (req, res) => {
+  try {
+    const pricingConfig = await getOrCreatePricingConfig();
+    return res.status(200).json({ success: true, data: pricingConfig });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.updatePricingConfig = async (req, res) => {
+  try {
+    const updates = {
+      currentSilverRate: Number(req.body.currentSilverRate ?? 225),
+      baseSilverRate: Number(req.body.baseSilverRate ?? 225),
+      silverRateChangeThreshold: Number(req.body.silverRateChangeThreshold ?? 275),
+      silverRateStep: Number(req.body.silverRateStep ?? 25),
+      priceStepAmount: Number(req.body.priceStepAmount ?? 25),
+    };
+
+    const pricingConfig = await PricingConfig.findOneAndUpdate(
+      { name: 'default' },
+      { $set: updates },
+      { new: true, upsert: true, runValidators: true }
+    );
+
+    return res.status(200).json({ success: true, data: pricingConfig });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
@@ -99,6 +169,17 @@ exports.createProduct = async (req, res) => {
     }
 
     const formattedSku = String(sku).trim().toUpperCase();
+    const pricingConfig = await getOrCreatePricingConfig();
+    const basePriceAmount = Number(req.body.basePriceAmount ?? priceAmount ?? 0);
+    const computedPrice = calculateDynamicPrice({
+      basePriceAmount,
+      weightGrams: Number(req.body.weight) || 0,
+      currentSilverRate: pricingConfig.currentSilverRate,
+      baseSilverRate: pricingConfig.baseSilverRate,
+      silverRateChangeThreshold: pricingConfig.silverRateChangeThreshold,
+      silverRateStep: pricingConfig.silverRateStep,
+      priceStepAmount: pricingConfig.priceStepAmount,
+    });
 
     // Check if product already exists
     let product = await Product.findOne({ sku: formattedSku });
@@ -106,6 +187,9 @@ exports.createProduct = async (req, res) => {
     const productData = {
       ...req.body,
       sku: formattedSku,
+      basePriceAmount,
+      priceAmount: computedPrice.priceAmount,
+      priceDisplay: req.body.priceDisplay || formatCurrency(computedPrice.priceAmount),
     };
 
     if (product) {
@@ -115,11 +199,11 @@ exports.createProduct = async (req, res) => {
         productData,
         { new: true, runValidators: true }
       );
-      return res.status(200).json({ success: true, data: toClient(product) });
+      return res.status(200).json({ success: true, data: toClient(product, pricingConfig) });
     } else {
       // Create new product
       product = await Product.create(productData);
-      return res.status(201).json({ success: true, data: toClient(product) });
+      return res.status(201).json({ success: true, data: toClient(product, pricingConfig) });
     }
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });

@@ -26,8 +26,12 @@ const ProductSchema = new mongoose.Schema(
     weight: { type: Number, default: 0 },
     weightLabel: { type: String },
     priceRaw: { type: String },
-    // Price stored in INR (rupees, not paise) so it matches the existing JSON.
-    // Order math multiplies and converts to paise when calling Razorpay.
+    basePriceAmount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    // Price stored in INR rupees and is recalculated dynamically from the live silver rate.
     priceAmount: {
       type: Number,
       required: [true, 'priceAmount is required'],

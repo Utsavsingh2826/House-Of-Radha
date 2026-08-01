@@ -52,7 +52,8 @@
   align-items: center;
 }
 
-.filter-btn, .sort-btn {
+.filter-btn,
+.sort-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -74,6 +75,12 @@
 
 .product-card {
   cursor: pointer;
+}
+
+.product-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .product-img-wrapper {
@@ -191,10 +198,24 @@
 }
 
 @keyframes cardToastFade {
-  0% { opacity: 0; transform: translateY(-4px); }
-  15% { opacity: 1; transform: translateY(0); }
-  85% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-4px); }
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 .product-info {

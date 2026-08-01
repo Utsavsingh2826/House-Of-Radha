@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
@@ -18,7 +18,7 @@ const CATEGORY_TITLES = {
 };
 
 const filterByRoute = (id, products) => {
-  const available = products.filter((p) => p.available);
+  const available = products.filter((p) => p.available && Number(p.priceAmount) > 0);
   if (!id) return available;
   switch (id) {
     case 'women':
@@ -155,57 +155,59 @@ const ProductList = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <div className="product-img-wrapper">
-                  <img src={getOptimizedImageUrl(product.image, 500, 500)} alt={product.name} loading="lazy" />
-                  {Array.isArray(product.images) && product.images.length > 1 && product.images[1] && (
-                    <img
-                      src={getOptimizedImageUrl(product.images[1], 500, 500)}
-                      alt=""
-                      aria-hidden="true"
-                      className="product-img-alt"
-                      loading="lazy"
-                    />
-                  )}
+                <Link to={`/products/${encodeURIComponent(product.sku)}`} className="product-card-link">
+                  <div className="product-img-wrapper">
+                    <img src={getOptimizedImageUrl(product.image, 500, 500)} alt={product.name} loading="lazy" />
+                    {Array.isArray(product.images) && product.images.length > 1 && product.images[1] && (
+                      <img
+                        src={getOptimizedImageUrl(product.images[1], 500, 500)}
+                        alt=""
+                        aria-hidden="true"
+                        className="product-img-alt"
+                        loading="lazy"
+                      />
+                    )}
 
-                  <div className="card-cta">
-                    <button
-                      type="button"
-                      className="add-cart-btn"
-                      disabled={cartLoading}
-                      onClick={(e) => handleAddToCart(e, product.sku)}
-                    >
-                      Add to Cart
-                    </button>
-                    <button
-                      type="button"
-                      className="buy-now-btn"
-                      onClick={(e) => handleBuyNow(e, product.sku)}
-                    >
-                      Buy Now
-                    </button>
-                  </div>
+                    <div className="card-cta">
+                      <button
+                        type="button"
+                        className="add-cart-btn"
+                        disabled={cartLoading}
+                        onClick={(e) => handleAddToCart(e, product.sku)}
+                      >
+                        Add to Cart
+                      </button>
+                      <button
+                        type="button"
+                        className="buy-now-btn"
+                        onClick={(e) => handleBuyNow(e, product.sku)}
+                      >
+                        Buy Now
+                      </button>
+                    </div>
 
-                  {toast && toast.sku === product.sku && (
-                    <span className="card-toast">{toast.message}</span>
-                  )}
+                    {toast && toast.sku === product.sku && (
+                      <span className="card-toast">{toast.message}</span>
+                    )}
 
-                  {product.subcategory && product.subcategory !== 'Band Bracelet' && (
-                    <span className="product-tag">{product.subcategory}</span>
-                  )}
-                </div>
-                <div className="product-info">
-                  <span className="collection-tag">
-                    {product.gender === 'female' ? 'Women' : product.gender === 'male' ? 'Men' : 'Unisex'} &middot; {product.category}
-                  </span>
-                  <h3>{product.name}</h3>
-                  <div className="product-meta-row">
-                    <span className="price">{product.priceDisplay}</span>
-                    {product.weightLabel && (
-                      <span className="weight">{product.weightLabel}</span>
+                    {product.subcategory && product.subcategory !== 'Band Bracelet' && (
+                      <span className="product-tag">{product.subcategory}</span>
                     )}
                   </div>
-                  <span className="product-sku">{product.sku}</span>
-                </div>
+                  <div className="product-info">
+                    <span className="collection-tag">
+                      {product.gender === 'female' ? 'Women' : product.gender === 'male' ? 'Men' : 'Unisex'} &middot; {product.category}
+                    </span>
+                    <h3>{product.name}</h3>
+                    <div className="product-meta-row">
+                      <span className="price">{product.priceDisplay}</span>
+                      {product.weightLabel && (
+                        <span className="weight">{product.weightLabel}</span>
+                      )}
+                    </div>
+                    <span className="product-sku">{product.sku}</span>
+                  </div>
+                </Link>
               </motion.article>
             ))}
           </div>

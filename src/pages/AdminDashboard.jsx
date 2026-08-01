@@ -4,6 +4,8 @@ import { api } from '../lib/api';
 import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './AdminDashboard.css';
 
+const formatCurrency = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
+
 const AdminDashboard = () => {
   const { logout, user } = useAuth();
   const [activeTab, setActiveTab] = useState('users'); // 'users' | 'products'
@@ -44,10 +46,22 @@ const AdminDashboard = () => {
   const [prodSubmitting, setProdSubmitting] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [pricingConfig, setPricingConfig] = useState({
+    currentSilverRate: 225,
+    baseSilverRate: 225,
+    silverRateChangeThreshold: 250,
+    silverRateStep: 25,
+    priceStepAmount: 25,
+  });
+  const [pricingConfigSaving, setPricingConfigSaving] = useState(false);
+  const [pricingConfigError, setPricingConfigError] = useState('');
+  const [pricingConfigSuccess, setPricingConfigSuccess] = useState('');
+  const [pricingPreview, setPricingPreview] = useState(null);
 
   useEffect(() => {
     fetchUsers();
     fetchProducts();
+    fetchPricingConfig();
   }, []);
 
   const fetchUsers = async () => {
@@ -76,6 +90,23 @@ const AdminDashboard = () => {
       console.error('Failed to fetch products:', err);
     } finally {
       setLoadingProducts(false);
+    }
+  };
+
+  const fetchPricingConfig = async () => {
+    try {
+      const res = await api('/api/products/pricing-config', { auth: true });
+      if (res.success) {
+        setPricingConfig({
+          currentSilverRate: res.data.currentSilverRate ?? 225,
+          baseSilverRate: res.data.baseSilverRate ?? 225,
+          silverRateChangeThreshold: res.data.silverRateChangeThreshold ?? 250,
+          silverRateStep: res.data.silverRateStep ?? 25,
+          priceStepAmount: res.data.priceStepAmount ?? 25,
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch pricing config:', err);
     }
   };
 
@@ -174,6 +205,42 @@ const AdminDashboard = () => {
     setProdImages((prev) => prev.filter((_, idx) => idx !== index));
   };
 
+  useEffect(() => {
+    const value = Number(prodPriceAmount || 0);
+    const weight = Number(prodWeight || 0);
+    if (!value || !weight) {
+      setPricingPreview(null);
+      return;
+    }
+
+    const stepCount = Math.max(0, Math.floor((Number(pricingConfig.currentSilverRate || 0) - Number(pricingConfig.silverRateChangeThreshold || 0)) / Number(pricingConfig.silverRateStep || 1)));
+    const extraAmount = stepCount * Number(pricingConfig.priceStepAmount || 0) * weight;
+    setPricingPreview(value + extraAmount);
+  }, [prodPriceAmount, prodWeight, pricingConfig]);
+
+  const handlePricingConfigSave = async (e) => {
+    e.preventDefault();
+    setPricingConfigError('');
+    setPricingConfigSuccess('');
+    setPricingConfigSaving(true);
+
+    try {
+      const res = await api('/api/products/pricing-config', {
+        method: 'POST',
+        auth: true,
+        body: pricingConfig,
+      });
+
+      if (res.success) {
+        setPricingConfigSuccess('Pricing rules updated successfully.');
+      }
+    } catch (err) {
+      setPricingConfigError(err.message || 'Failed to update pricing rules');
+    } finally {
+      setPricingConfigSaving(false);
+    }
+  };
+
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     setProdFormError('');
@@ -195,8 +262,8 @@ const AdminDashboard = () => {
     setProdSubmitting(true);
 
     try {
-      const priceAmt = parseInt(prodPriceAmount, 10);
-      const displayPrice = prodPriceDisplay || `₹${(priceAmt / 100).toLocaleString('en-IN')}`;
+      const basePriceAmount = parseInt(prodPriceAmount, 10);
+      const displayPrice = prodPriceDisplay || formatCurrency(basePriceAmount);
       const rawPrice = prodPriceRaw || displayPrice;
 
       const payload = {
@@ -209,7 +276,8 @@ const AdminDashboard = () => {
         weight: prodWeight ? parseFloat(prodWeight) : 0,
         weightLabel: prodWeightLabel || (prodWeight ? `${prodWeight}g` : ''),
         priceRaw: rawPrice,
-        priceAmount: priceAmt,
+        basePriceAmount,
+        priceAmount: basePriceAmount,
         priceDisplay: displayPrice,
         description: prodDescription.trim(),
         keywords: prodKeywords.trim(),
@@ -246,7 +314,7 @@ const AdminDashboard = () => {
     setProdWeight(prod.weight !== undefined ? prod.weight : '');
     setProdWeightLabel(prod.weightLabel || '');
     setProdPriceRaw(prod.priceRaw || '');
-    setProdPriceAmount(prod.priceAmount !== undefined ? prod.priceAmount : '');
+    setProdPriceAmount(prod.basePriceAmount ?? prod.priceAmount !== undefined ? prod.priceAmount : '');
     setProdPriceDisplay(prod.priceDisplay || '');
     setProdDescription(prod.description || '');
     setProdKeywords(prod.keywords || '');
@@ -557,16 +625,23 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="admin-form-group">
-                  <label className="admin-label">Price Amount (in ₹ Paisa, e.g. 5000 for ₹50.00) *</label>
+                  <label className="admin-label">Base MRP Amount (₹) *</label>
                   <input
                     type="number"
                     className="admin-input-field"
                     value={prodPriceAmount}
                     onChange={(e) => setProdPriceAmount(e.target.value)}
                     required
-                    placeholder="e.g. 5000"
+                    placeholder="e.g. 10000"
                   />
-                  <span className="form-help-text">Standard integer representation (Amount = Rupees * 100)</span>
+                  <span className="form-help-text">This is the base MRP before the silver-rate uplift kicks in.</span>
+                </div>
+
+                <div className="admin-form-group">
+                  <label className="admin-label">Dynamic Pricing Preview</label>
+                  <div className="form-help-text" style={{ marginBottom: '0.25rem' }}>
+                    {pricingPreview !== null ? `Estimated MRP at the current silver rate: ${formatCurrency(pricingPreview)}` : 'Enter weight and base price to preview the dynamic MRP.'}
+                  </div>
                 </div>
 
                 <div className="admin-form-row">
@@ -590,6 +665,64 @@ const AdminDashboard = () => {
                       placeholder="e.g. P50"
                     />
                   </div>
+                </div>
+
+                <div className="admin-form-group">
+                  <label className="admin-label">Pricing Rules</label>
+                  {pricingConfigError && <p className="admin-error-box">{pricingConfigError}</p>}
+                  {pricingConfigSuccess && <p className="admin-success-box">{pricingConfigSuccess}</p>}
+                  <div className="admin-form-row">
+                    <div className="admin-form-group">
+                      <label className="admin-label">Current Silver Rate (₹/gm)</label>
+                      <input
+                        type="number"
+                        className="admin-input-field"
+                        value={pricingConfig.currentSilverRate}
+                        onChange={(e) => setPricingConfig((prev) => ({ ...prev, currentSilverRate: e.target.value }))}
+                      />
+                    </div>
+                    <div className="admin-form-group">
+                      <label className="admin-label">Base Silver Rate (₹/gm)</label>
+                      <input
+                        type="number"
+                        className="admin-input-field"
+                        value={pricingConfig.baseSilverRate}
+                        onChange={(e) => setPricingConfig((prev) => ({ ...prev, baseSilverRate: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+                  <div className="admin-form-row">
+                    <div className="admin-form-group">
+                      <label className="admin-label">Silver Threshold (₹/gm)</label>
+                      <input
+                        type="number"
+                        className="admin-input-field"
+                        value={pricingConfig.silverRateChangeThreshold}
+                        onChange={(e) => setPricingConfig((prev) => ({ ...prev, silverRateChangeThreshold: e.target.value }))}
+                      />
+                    </div>
+                    <div className="admin-form-group">
+                      <label className="admin-label">Silver Step (₹/gm)</label>
+                      <input
+                        type="number"
+                        className="admin-input-field"
+                        value={pricingConfig.silverRateStep}
+                        onChange={(e) => setPricingConfig((prev) => ({ ...prev, silverRateStep: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+                  <div className="admin-form-group">
+                    <label className="admin-label">Price Step Amount (₹ per gram)</label>
+                    <input
+                      type="number"
+                      className="admin-input-field"
+                      value={pricingConfig.priceStepAmount}
+                      onChange={(e) => setPricingConfig((prev) => ({ ...prev, priceStepAmount: e.target.value }))}
+                    />
+                  </div>
+                  <button type="button" className="admin-submit-btn" onClick={handlePricingConfigSave} disabled={pricingConfigSaving}>
+                    {pricingConfigSaving ? 'Saving...' : 'Save Pricing Rules'}
+                  </button>
                 </div>
 
                 <div className="admin-form-group">
@@ -740,7 +873,7 @@ const AdminDashboard = () => {
                           </td>
                           <td className="user-name-cell">{prod.sku}</td>
                           <td>{prod.name}</td>
-                          <td>{prod.priceDisplay || `₹${(prod.priceAmount / 100).toLocaleString('en-IN')}`}</td>
+                          <td>{prod.priceDisplay || formatCurrency(prod.priceAmount)}</td>
                           <td>
                             <span className={prod.available ? 'product-row-available' : 'product-row-unavailable'}>
                               {prod.available ? 'Available' : 'Draft'}
