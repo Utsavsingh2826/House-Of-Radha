@@ -1,0 +1,367 @@
+[
+  {
+    "srNo": 1,
+    "productCode": "RA-JA-01",
+    "productName": "Krishna love",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When he",
+    "rate": 950,
+    "qty": 9
+  },
+  {
+    "srNo": 2,
+    "productCode": "RA-JA-02",
+    "productName": "Shiv Bhakti",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When",
+    "rate": 1150,
+    "qty": 25
+  },
+  {
+    "srNo": 3,
+    "productCode": "RA-JA-03",
+    "productName": "Ram Hanuman",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When Bro",
+    "rate": 700,
+    "qty": 9
+  },
+  {
+    "srNo": 4,
+    "productCode": "RA-JA-04",
+    "productName": "Hanuman Gada",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When the",
+    "rate": 700,
+    "qty": 8
+  },
+  {
+    "srNo": 5,
+    "productCode": "RA-JA-05",
+    "productName": "Shiv Shakti",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When bro",
+    "rate": 950,
+    "qty": 7
+  },
+  {
+    "srNo": 6,
+    "productCode": "RA-JA-06",
+    "productName": "Shubh Sathiya",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "For your",
+    "rate": 700,
+    "qty": 7
+  },
+  {
+    "srNo": 7,
+    "productCode": "RA-JA-07",
+    "productName": "Ganeshji Bappa",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "For all",
+    "rate": 700,
+    "qty": 15
+  },
+  {
+    "srNo": 8,
+    "productCode": "RA-JA-08",
+    "productName": "Ganpatiji",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "For all",
+    "rate": 950,
+    "qty": 5
+  },
+  {
+    "srNo": 9,
+    "productCode": "RA-JA-09",
+    "productName": "Cutie Patootie Elephant",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "Exclusively",
+    "rate": 1150,
+    "qty": 4
+  },
+  {
+    "srNo": 10,
+    "productCode": "RA-JA-10",
+    "productName": "Good luck Turtle",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "Exclusively",
+    "rate": 700,
+    "qty": 7
+  },
+  {
+    "srNo": 11,
+    "productCode": "RA-JA-11",
+    "productName": "Mickey Mouse",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "When",
+    "rate": 700,
+    "qty": 20
+  },
+  {
+    "srNo": 12,
+    "productCode": "RA-JA-12",
+    "productName": "Ginni",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "Tie a silver",
+    "rate": 700,
+    "qty": 20
+  },
+  {
+    "srNo": 13,
+    "productCode": "RA-JA-13",
+    "productName": "Gym waala bhai",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When bro is",
+    "rate": 1150,
+    "qty": 20
+  },
+  {
+    "srNo": 14,
+    "productCode": "RA-JA-14",
+    "productName": "Veera",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "For your",
+    "rate": 700,
+    "qty": 9
+  },
+  {
+    "srNo": 15,
+    "productCode": "RA-JA-15",
+    "productName": "Minimalistic flower",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When bro",
+    "rate": 700,
+    "qty": 20
+  },
+  {
+    "productCode": "RA-B0-01",
+    "productName": "Meena Damru Blue",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When bro",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-02",
+    "productName": "Meena Damru Green",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When bro",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-03",
+    "productName": "Bro code Blue",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When you",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-04",
+    "productName": "Bro code Red",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When you",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-05",
+    "productName": "Mera Bhai hai tu",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When you",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-06",
+    "productName": "Sathiya",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "For your",
+    "rate": 1150,
+    "qty": 2
+  },
+  {
+    "productCode": "RA-B0-07",
+    "productName": "Ganpati Bappa",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "For Gapati",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-08",
+    "productName": "Trishul with Meena Damru",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When your",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-09",
+    "productName": "Trishul Design Rakhi",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When your",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-10",
+    "productName": "Trishul Om rakhi",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When your",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-11",
+    "productName": "Peppa Pig Meena",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "When little",
+    "rate": 1150,
+    "qty": 2
+  },
+  {
+    "productCode": "RA-B0-12",
+    "productName": "Best Bhai Blue Beaded",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "When you",
+    "rate": 1150,
+    "qty": 4
+  },
+  {
+    "productCode": "RA-B0-13",
+    "productName": "Music Lovers",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "LIFESTYLE",
+    "description": "For Bros",
+    "rate": 950,
+    "qty": 2
+  },
+  {
+    "productCode": "RA-B0-14",
+    "productName": "Om Beaded Rakhi",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When your",
+    "rate": 950,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-15",
+    "productName": "Shivling with Meena",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "SPIRITUAL",
+    "description": "When your",
+    "rate": 950,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-16",
+    "productName": "Car fans",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "For those",
+    "rate": 1150,
+    "qty": 2
+  },
+  {
+    "productCode": "RA-B0-17",
+    "productName": "Shin Chan rakhi",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "For that",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-18",
+    "productName": "Chota Bhem",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "For Chota",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-19",
+    "productName": "Biker Kid",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "Bike rakhi",
+    "rate": 1150,
+    "qty": 1
+  },
+  {
+    "productCode": "RA-B0-20",
+    "productName": "Spider-Man",
+    "gender": "MALE",
+    "category": "RAKHI",
+    "subcategory": "KIDS",
+    "description": "For those",
+    "rate": 1150,
+    "qty": 1
+  }
+]

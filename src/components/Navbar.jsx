@@ -30,6 +30,7 @@ const Navbar = () => {
           <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
             <Link to="/category/women" onClick={() => setIsMenuOpen(false)}>Women</Link>
             <Link to="/category/men" onClick={() => setIsMenuOpen(false)}>Men</Link>
+            <Link to="/category/rakhi" onClick={() => setIsMenuOpen(false)}>Rakhi</Link>
             <Link to="/category/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link>
           </div>
         </div>

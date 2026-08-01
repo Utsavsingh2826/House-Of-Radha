@@ -7,6 +7,7 @@
     "dev": "node index.js",
     "test": "jest --runInBand",
     "seed:products": "node scripts/seed-products.js",
+    "seed:rakhi": "node scripts/seed-rakhi-products.js",
     "seed:orders": "node scripts/seed-orders.js",
     "seed:admin": "node scripts/seed-admin.js"
   },

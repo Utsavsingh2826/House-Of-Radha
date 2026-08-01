@@ -22,7 +22,17 @@ const getOrCreatePricingConfig = async () => {
   return config;
 };
 
+const isStaticRakhiProduct = (product) => String(product?.category || '').toUpperCase() === 'RAKHI';
+
 const buildPricingSnapshot = (product, pricingConfig) => {
+  if (isStaticRakhiProduct(product)) {
+    const priceAmount = Number(product?.priceAmount ?? product?.basePriceAmount ?? 0);
+    return {
+      priceAmount,
+      priceDisplay: product?.priceDisplay || formatCurrency(priceAmount),
+    };
+  }
+
   const basePriceAmount = Number(product?.basePriceAmount ?? product?.priceAmount ?? 0);
   const priceAmount = calculateDynamicPrice({
     basePriceAmount,
@@ -85,7 +95,7 @@ exports.listProducts = async (req, res) => {
       if (['male', 'female', 'unisex'].includes(g)) filter.gender = g;
     }
     if (req.query.category) {
-      filter.category = String(req.query.category);
+      filter.category = String(req.query.category).trim().toUpperCase();
     }
     if (req.query.q) {
       const rx = new RegExp(String(req.query.q).trim(), 'i');

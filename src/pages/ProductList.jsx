@@ -15,6 +15,7 @@ const CATEGORY_TITLES = {
   dainty: { title: 'The Dainty & Modern', subtitle: 'Office wear, party, mostly diamonds' },
   temple: { title: 'The Temple Jewelry', subtitle: 'Brides, festive shoppers, traditionalists' },
   fusion: { title: 'The Fusion Collection', subtitle: 'Oxidized & Ethnic Silver' },
+  rakhi: { title: 'Rakhi Collection', subtitle: 'Special festive rakhi designs with matching charm stories' },
 };
 
 const filterByRoute = (id, products) => {
@@ -25,6 +26,8 @@ const filterByRoute = (id, products) => {
       return available.filter((p) => p.gender === 'female');
     case 'men':
       return available.filter((p) => p.gender === 'male');
+    case 'rakhi':
+      return available.filter((p) => String(p.category || '').toUpperCase() === 'RAKHI');
     case 'collections':
       return available;
     default:
