@@ -8,7 +8,7 @@ process.env.SMTP_PORT = '587';
 process.env.SMTP_USER = 'test@test.local';
 process.env.SMTP_PASS = 'test_pass';
 process.env.FROM_EMAIL = 'test@test.local';
-process.env.RESET_URL = 'http://localhost:5173/reset-password';
+process.env.RESET_URL = 'https://houseofradha.com/reset-password';
 
 const app = require('../index');
 const User = require('../models/User');
@@ -44,7 +44,7 @@ describe('Forgot / Reset password', () => {
 
     const callArgs = mockSendMail.mock.calls[0][0];
     expect(callArgs.to).toBe('reset@b.com');
-    expect(callArgs.html).toMatch(/http:\/\/localhost:5173\/reset-password\/[a-f0-9]+/);
+    expect(callArgs.html).toMatch(/https:\/\/houseofradha\.com\/reset-password\/[a-f0-9]+/);
   });
 
   it('forgot-password for a non-existent email returns 200 (anti-enumeration) and does not send', async () => {

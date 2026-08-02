@@ -190,7 +190,7 @@ exports.forgotPassword = async (req, res) => {
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
 
-    const base = (process.env.RESET_URL || 'http://localhost:5173/reset-password').replace(/\/$/, '');
+    const base = (process.env.RESET_URL || 'https://houseofradha.com/reset-password').replace(/\/$/, '');
     const resetUrl = `${base}/${resetToken}`;
     const tmpl = resetPasswordTemplate({ firstName: user.firstName, resetUrl });
 
