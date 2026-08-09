@@ -514,7 +514,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         ) : (
-          <div className="admin-grid" style={{ gridTemplateColumns: '450px 1fr' }}>
+          <div className="admin-grid">
             {/* Product Creation Section */}
             <div className="admin-card admin-glassmorphic-card">
               <div className="card-header">

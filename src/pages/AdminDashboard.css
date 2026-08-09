@@ -88,6 +88,28 @@
   }
 }
 
+@media (max-width: 640px) {
+  .admin-nav-container {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+
+  .admin-profile {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .admin-main-content {
+    padding: 0 1rem;
+  }
+
+  .admin-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-card {
   border-radius: 8px;
   overflow: hidden;

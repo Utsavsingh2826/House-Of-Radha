@@ -279,4 +279,14 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
   }
+
+  .filter-bar.sticky {
+    top: 56px;
+  }
+
+  .card-cta {
+    transform: translateY(0);
+    position: static;
+    background: none;
+  }
 }

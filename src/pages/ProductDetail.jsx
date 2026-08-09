@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +20,7 @@ const ProductDetail = () => {
     const [error, setError] = useState(null);
     const [selectedImg, setSelectedImg] = useState(0);
     const [toast, setToast] = useState(null);
+    const [relatedProducts, setRelatedProducts] = useState([]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -45,11 +46,35 @@ const ProductDetail = () => {
         return () => clearTimeout(t);
     }, [toast]);
 
-    const handleAddToCart = async () => {
-        if (!user) {
-            requireAuth(navigate, location, { action: 'addToCart', sku });
+    // Related products: same subcategory first (falls back to same category),
+    // excluding the product being viewed.
+    useEffect(() => {
+        if (!product) {
+            setRelatedProducts([]);
             return;
         }
+        let cancelled = false;
+        api(`/api/products?category=${encodeURIComponent(product.category || '')}`, { auth: false })
+            .then((res) => {
+                if (cancelled) return;
+                const all = (Array.isArray(res?.data) ? res.data : []).filter(
+                    (p) => p.sku !== product.sku && p.available
+                );
+                const sameSubcategory = product.subcategory
+                    ? all.filter((p) => p.subcategory === product.subcategory)
+                    : [];
+                const pool = sameSubcategory.length >= 4 ? sameSubcategory : all;
+                setRelatedProducts(pool.slice(0, 5));
+            })
+            .catch(() => {
+                if (!cancelled) setRelatedProducts([]);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [product]);
+
+    const handleAddToCart = async () => {
         const result = await addToCart(sku, 1);
         setToast(result.success ? 'Added to bag ✓' : (result.error || 'Failed'));
     };
@@ -140,9 +165,6 @@ const ProductDetail = () => {
 
                     <div className="pd-price-row">
                         <span className="pd-price">{product.priceDisplay || 'Price on request'}</span>
-                        {product.weightLabel && (
-                            <span className="pd-weight">{product.weightLabel}</span>
-                        )}
                     </div>
 
                     {product.description && (
@@ -169,6 +191,29 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
+
+            {relatedProducts.length > 0 && (
+                <div className="pd-related">
+                    <h2>You may also like</h2>
+                    <div className="pd-related-grid">
+                        {relatedProducts.map((p) => (
+                            <Link
+                                key={p.sku}
+                                to={`/products/${p.sku}`}
+                                className="pd-related-card"
+                            >
+                                <div className="pd-related-img">
+                                    {p.image ? (
+                                        <img src={getOptimizedImageUrl(p.image, 400, 480)} alt={p.name} />
+                                    ) : null}
+                                </div>
+                                <h3>{p.name}</h3>
+                                <span className="pd-related-price">{p.priceDisplay}</span>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

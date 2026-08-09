@@ -11,8 +11,6 @@ const Footer = () => {
           <p>Every piece of handcrafted jewellery will have 925 silver hallmarking. Quality and tradition in every sparkle.</p>
           <div className="social-links">
             <a href="#"><span className="material-symbols-outlined">public</span> Instagram</a>
-            <a href="#"><span className="material-symbols-outlined">share</span> Facebook</a>
-            <a href="#"><span className="material-symbols-outlined">alternate_email</span> Twitter</a>
           </div>
         </div>
 

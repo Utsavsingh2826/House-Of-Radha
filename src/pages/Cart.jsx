@@ -1,29 +1,15 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { requireAuth } from '../lib/requireAuth';
 import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './Cart.css';
 
 const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
 
 const Cart = () => {
-  const { user, loading: authLoading } = useAuth();
   const { items, count, total, loading, error, updateQty, removeFromCart } = useCart();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      requireAuth(navigate, location);
-    }
-  }, [authLoading, user, navigate, location]);
-
-  if (authLoading || !user) {
-    return <div className="cart-page"><div className="container">Loading...</div></div>;
-  }
 
   return (
     <div className="cart-page">

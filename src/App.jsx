@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
+import BeforeWeMelt from './pages/BeforeWeMelt';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/products" element={<ProductList />} />
                 <Route path="/products/:sku" element={<ProductDetail />} />
                 <Route path="/category/:id" element={<ProductList />} />
+                <Route path="/before-we-melt" element={<BeforeWeMelt />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order/success/:id" element={<OrderSuccess />} />

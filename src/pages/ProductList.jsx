@@ -90,10 +90,6 @@ const ProductList = () => {
   const handleAddToCart = async (e, sku) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) {
-      requireAuth(navigate, location, { action: 'addToCart', sku });
-      return;
-    }
     const result = await addToCart(sku, 1);
     setToast({
       sku,
@@ -204,9 +200,6 @@ const ProductList = () => {
                     <h3>{product.name}</h3>
                     <div className="product-meta-row">
                       <span className="price">{product.priceDisplay}</span>
-                      {product.weightLabel && (
-                        <span className="weight">{product.weightLabel}</span>
-                      )}
                     </div>
                     <span className="product-sku">{product.sku}</span>
                   </div>

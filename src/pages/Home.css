@@ -1,51 +1,137 @@
 .hero {
+  position: relative;
   height: 100vh;
-  display: flex;
-  align-items: center;
   background-color: var(--secondary);
   overflow: hidden;
 }
 
-.hero-content {
-  flex: 1;
-  padding: 0 var(--spacing-lg);
-  max-width: 600px;
-  z-index: 2;
-}
-
-.hero-content h1 {
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  line-height: 1.1;
-  margin-bottom: var(--spacing-md);
-  color: #1a2a4f;
-}
-
-.hero-content p {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-bottom: var(--spacing-md);
-  max-width: 400px;
-}
-
-.hero-image-container {
-  flex: 1.2;
+.hero-swiper,
+.hero-swiper .swiper-wrapper,
+.hero-swiper .swiper-slide {
   height: 100%;
-  position: relative;
 }
 
-.hero-img {
+.hero-slide {
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+}
+
+/* NAV_CLEARANCE: image/scrim start below the fixed navbar (~100px) so the
+   logo + nav icons sit on the plain --secondary background, not the photo. */
+.hero-slide-bg {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-slide-scrim {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 41, 0.55) 0%, rgba(20, 26, 41, 0.2) 45%, rgba(20, 26, 41, 0) 72%);
+}
+
+.hero-slide-content {
+  position: absolute;
+  left: var(--spacing-lg);
+  bottom: 4rem;
+  z-index: 2;
+  max-width: 480px;
+  color: #fff;
+}
+
+.hero-slide-content h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.hero-slide-content p {
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background: #fff;
+  opacity: 0.6;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+.hero-nav {
+  position: absolute;
+  top: calc(50% + 50px);
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 6;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.hero-nav:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.hero-nav .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+.hero-prev {
+  left: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.hero-next {
+  right: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+@media (max-width: 600px) {
+  .hero-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-slide-content {
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    bottom: 3rem;
+    max-width: none;
+  }
 }
 
 .section-header {
   text-align: center;
   margin-bottom: var(--spacing-lg);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-header h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.4;
+  font-weight: 500;
   margin-bottom: var(--spacing-xs);
   color: #1a2a4f;
 }
@@ -451,6 +537,11 @@
   object-fit: cover;
 }
 
+.section-header .hallmark-tag {
+  margin-bottom: var(--spacing-sm);
+  display: inline-block;
+}
+
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -462,21 +553,6 @@
 }
 
 @media (max-width: 992px) {
-  .hero {
-    flex-direction: column-reverse;
-    height: auto;
-    padding-top: 100px;
-  }
-  
-  .hero-content {
-    padding: var(--spacing-md);
-    text-align: center;
-  }
-  
-  .hero-content p {
-    margin: 0 auto var(--spacing-md);
-  }
-  
   .featured-flex {
     flex-direction: column;
   }

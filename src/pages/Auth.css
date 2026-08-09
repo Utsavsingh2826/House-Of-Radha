@@ -112,10 +112,16 @@
   .auth-image-side {
     display: none;
   }
-  
+
   .auth-container {
     max-width: 500px;
     margin: 0 var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
   }
 }
 

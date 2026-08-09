@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFlip, Navigation, Pagination, Keyboard } from 'swiper/modules';
 import 'swiper/css';
@@ -10,6 +9,47 @@ import 'swiper/css/pagination';
 import './Home.css';
 import heroImg from '../assets/images/hero.png';
 import templeImg from '../assets/images/temple.png';
+import rakhiHeroImg from '../assets/images/rakhi-hero.png';
+import jewelryCloseupImg from '../assets/images/jewelry-closeup.png';
+import necklaceTempleImg from '../assets/images/necklace-temple.png';
+
+// Matches the 4-slide hero banner spec from the WEBSITE CHANGES deck.
+// "sister" has no client-supplied photo yet — using heroImg as a placeholder
+// until that image arrives.
+const HERO_SLIDES = [
+  {
+    id: 'rakhi',
+    image: rakhiHeroImg,
+    heading: 'Iss Saal Bhai Ki Chandi Hai!',
+    text: 'Shop our pure 925 silver Rakhi collection. 10% off on your first order.',
+    cta: 'Shop Rakhi Collection',
+    link: '/category/rakhi',
+  },
+  {
+    id: 'sister',
+    image: heroImg,
+    heading: 'Gifts for Sister That Grow in Value, Devotion & Memory',
+    text: "She won't fight about this with you!",
+    cta: 'Shop Gifts for Sister & Bhabhis',
+    link: '/category/women',
+  },
+  {
+    id: 'brother',
+    image: jewelryCloseupImg,
+    heading: 'Dapper & Dripping in Silver!',
+    text: 'For the Brother Who Deserves Nothing Less Than Extraordinary. Gift him fine silver accessories that bring sophistication to every celebration and carry sentimental value for a lifetime.',
+    cta: 'Shop Gifts for Brother',
+    link: '/category/men',
+  },
+  {
+    id: 'brand',
+    image: necklaceTempleImg,
+    heading: 'Jewellery That Speaks to the Soul',
+    text: 'Inspired by the divine, eternal love of Radha and Krishna, we bring you heritage-rich craftsmanship with contemporary design.',
+    cta: 'Shop Our Collection',
+    link: '/category/collections',
+  },
+];
 
 const Home = () => {
   const collections = [
@@ -38,42 +78,53 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* Hero Section */}
+      {/* Hero Section — 4-slide banner carousel per WEBSITE CHANGES deck */}
       <section className="hero">
-        <div className="hero-content">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Handcrafted Elegance in 925 Silver
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Discover the House of Radha. Where tradition meets modern craftsmanship.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <Link to="/products" className="btn btn-primary">Shop Collection</Link>
-          </motion.div>
-        </div>
-        <div className="hero-image-container">
-          <img src={heroImg} alt="Jewelry Hero" className="hero-img" />
-        </div>
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+          navigation={{ nextEl: '.hero-next', prevEl: '.hero-prev' }}
+          pagination={{ clickable: true }}
+          loop
+          className="hero-swiper"
+        >
+          {HERO_SLIDES.map((slide) => (
+            <SwiperSlide key={slide.id}>
+              <div className="hero-slide">
+                <div className="hero-slide-bg" style={{ backgroundImage: `url(${slide.image})` }} />
+                <div className="hero-slide-scrim" />
+                <div className="hero-slide-content">
+                  <h1>{slide.heading}</h1>
+                  <p>{slide.text}</p>
+                  <Link to={slide.link} className="btn btn-primary">{slide.cta}</Link>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <button className="hero-nav hero-prev" aria-label="Previous slide">
+          <span className="material-symbols-outlined">arrow_back</span>
+        </button>
+        <button className="hero-nav hero-next" aria-label="Next slide">
+          <span className="material-symbols-outlined">arrow_forward</span>
+        </button>
       </section>
 
-      {/* Collections Section */}
+      {/* Collections Section — header replaced with RadhaRani's Divinity text (no image) */}
       <section className="section collections">
         <div className="container">
           <div className="section-header">
-            <h2>Explore Our Collections</h2>
-            <p>Every piece of handcrafted jewellery will have 925 silver hallmarking.</p>
+            <p className="hallmark-tag">RadhaRani's Divinity</p>
+            <h2>
+              In every age, there is a muse who commands the heart. Ours is RADHA — sovereign
+              of grace, keeper of beauty, and eternal embodiment of the divine feminine.
+            </h2>
+            <p>
+              She is the spirit that moves every creation in this House, where artistry is an
+              offering and beauty a sacred inheritance. Gold, silver, and diamond are simply
+              the language we speak, but devotion, allure, and feminine power are the essence
+              we carry.
+            </p>
           </div>
         </div>
 
@@ -177,13 +228,13 @@ const Home = () => {
           <div className="featured-flex">
             <div className="featured-text">
               <h2>Men's Fashion</h2>
-              <p>Premium Silver Kadas, Brooches, and more.</p>
+              <p>Premium silver kadas, brooches, and more.</p>
               <Link to="/category/men" className="text-link">
                 Explore Men's Collection <span className="material-symbols-outlined">arrow_forward</span>
               </Link>
             </div>
             <div className="featured-image">
-               <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=1000" alt="Men's Jewelry" />
+               <img src={jewelryCloseupImg} alt="Men's silver jewellery" />
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const { user, logout } = useAuth();
   const { count } = useCart();
 
@@ -17,6 +18,20 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (!isCollectionsOpen) return;
+    const closeDropdown = () => setIsCollectionsOpen(false);
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, [isCollectionsOpen]);
 
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
@@ -30,9 +45,36 @@ const Navbar = () => {
           <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
             <Link to="/category/women" onClick={() => setIsMenuOpen(false)}>Women</Link>
             <Link to="/category/men" onClick={() => setIsMenuOpen(false)}>Men</Link>
-            <Link to="/category/rakhi" onClick={() => setIsMenuOpen(false)}>Rakhi</Link>
-            <Link to="/category/collections" onClick={() => setIsMenuOpen(false)}>Collections</Link>
+            <div className="nav-dropdown" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                className="nav-dropdown-toggle"
+                onClick={() => setIsCollectionsOpen((v) => !v)}
+                aria-expanded={isCollectionsOpen}
+              >
+                Collections
+                <span className="material-symbols-outlined nav-dropdown-caret">
+                  {isCollectionsOpen ? 'expand_less' : 'expand_more'}
+                </span>
+              </button>
+              <div className={`nav-dropdown-menu ${isCollectionsOpen ? 'open' : ''}`}>
+                <Link
+                  to="/category/collections"
+                  onClick={() => { setIsMenuOpen(false); setIsCollectionsOpen(false); }}
+                >
+                  All Collections
+                </Link>
+                <Link
+                  to="/category/rakhi"
+                  onClick={() => { setIsMenuOpen(false); setIsCollectionsOpen(false); }}
+                >
+                  Rakhi
+                </Link>
+              </div>
+            </div>
+            <Link to="/before-we-melt" onClick={() => setIsMenuOpen(false)}>Before We Melt</Link>
           </div>
+          {isMenuOpen && <div className="nav-overlay" onClick={() => setIsMenuOpen(false)} />}
         </div>
 
         <div className="nav-center">
@@ -49,9 +91,9 @@ const Navbar = () => {
           {user ? (
             <div className="user-menu-dropdown">
               {user.role === 'admin' && (
-                <Link to="/admin/dashboard" className="admin-nav-link" title="Admin Dashboard" style={{ marginRight: '1rem', color: 'var(--primary)', fontWeight: '500', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>dashboard</span>
-                  Dashboard
+                <Link to="/admin/dashboard" className="admin-nav-link nav-icon" title="Admin Dashboard">
+                  <span className="material-symbols-outlined">dashboard</span>
+                  <span className="admin-nav-text">Dashboard</span>
                 </Link>
               )}
               <Link to="/profile" className="nav-icon" aria-label="My profile" title="My profile">
