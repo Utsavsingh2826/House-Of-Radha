@@ -8,6 +8,20 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+
+# Local product photos (seeded to Cloudinary; keep out of git)
+/anklets/
+/bangles/
+/bracelets/
+/brooches/
+/chains/
+/earrings/
+/kids/
+/necklaces/
+/pendant set/
+/pendants/
+/Rakhi/
+
 dist
 dist-ssr
 *.local

@@ -95,7 +95,13 @@ exports.listProducts = async (req, res) => {
       if (['male', 'female', 'unisex'].includes(g)) filter.gender = g;
     }
     if (req.query.category) {
-      filter.category = String(req.query.category).trim().toUpperCase();
+      filter.category = new RegExp(
+        `^${String(req.query.category).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,
+        'i'
+      );
+    } else if (req.query.all !== 'true') {
+      // Rakhi catalog is maintained separately; hide from the main storefront.
+      filter.category = { $not: /^rakhi$/i };
     }
     if (req.query.q) {
       const rx = new RegExp(String(req.query.q).trim(), 'i');

@@ -1,0 +1,858 @@
+{
+  "generatedAt": "2026-10-17T12:18:11.033Z",
+  "bySku": {
+    "BC-BN-001": {
+      "paths": [
+        "bracelets/BC-BN-001.png"
+      ],
+      "primary": "bracelets/BC-BN-001.png"
+    },
+    "BC-BN-002": {
+      "paths": [
+        "bracelets/BC-BN-002.png",
+        "bracelets/BC-BN-002_1.png"
+      ],
+      "primary": "bracelets/BC-BN-002.png"
+    },
+    "BC-BN-003": {
+      "paths": [
+        "bracelets/BC-BN-003.png",
+        "bracelets/BC-BN-003_1.png"
+      ],
+      "primary": "bracelets/BC-BN-003.png"
+    },
+    "BC-BN-004": {
+      "paths": [
+        "bracelets/BC-BN-004.png",
+        "bracelets/BC-BN-004_1.png"
+      ],
+      "primary": "bracelets/BC-BN-004.png"
+    },
+    "BC-BN-005": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-BN-006": {
+      "paths": [
+        "bracelets/BC-BN-006.png",
+        "bracelets/BC-BN-006_1.png"
+      ],
+      "primary": "bracelets/BC-BN-006.png"
+    },
+    "BC-BN-007": {
+      "paths": [
+        "bracelets/BC-BN-007.png",
+        "bracelets/BC-BN-007(1).png",
+        "bracelets/BC-BN-007(2).png"
+      ],
+      "primary": "bracelets/BC-BN-007.png"
+    },
+    "BC-BN-008": {
+      "paths": [
+        "bracelets/BC-BN-008.png",
+        "bracelets/BC-BN-008_1.png",
+        "bracelets/BC-BN-008(1).png"
+      ],
+      "primary": "bracelets/BC-BN-008.png"
+    },
+    "BC-BN-009": {
+      "paths": [
+        "bracelets/BC-BN-009.png",
+        "bracelets/BC-BN-009_1.png",
+        "bracelets/BC-BN-009_2.png",
+        "bracelets/BC-BN-009_3.png",
+        "bracelets/BC-BN-009(1).png"
+      ],
+      "primary": "bracelets/BC-BN-009.png"
+    },
+    "BC-BN-010": {
+      "paths": [
+        "bracelets/BC-BN-010.png",
+        "bracelets/BC-BN-010_1.png",
+        "bracelets/BC-BN-010_2.png"
+      ],
+      "primary": "bracelets/BC-BN-010.png"
+    },
+    "BC-BN-011": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-BN-012": {
+      "paths": [
+        "bracelets/BC-BN-012.png",
+        "bracelets/BC-BN-012_1.png"
+      ],
+      "primary": "bracelets/BC-BN-012.png"
+    },
+    "BC-BN-013": {
+      "paths": [
+        "bracelets/BC-BN-013.png",
+        "bracelets/BC-BN-013_1.png"
+      ],
+      "primary": "bracelets/BC-BN-013.png"
+    },
+    "BC-BN-014": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-BN-015": {
+      "paths": [
+        "bracelets/BC-BN-015.png"
+      ],
+      "primary": "bracelets/BC-BN-015.png"
+    },
+    "BC-BN-016": {
+      "paths": [
+        "bracelets/BC-BN-016.png"
+      ],
+      "primary": "bracelets/BC-BN-016.png"
+    },
+    "BC-BN-017": {
+      "paths": [
+        "bracelets/BC-BN-017.png"
+      ],
+      "primary": "bracelets/BC-BN-017.png"
+    },
+    "BC-OX-01": {
+      "paths": [
+        "bracelets/BC-OX-01.png",
+        "bracelets/BC-OX-01(1).png"
+      ],
+      "primary": "bracelets/BC-OX-01.png"
+    },
+    "BC-OX-02": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-OX-03": {
+      "paths": [
+        "bracelets/BC-OX-03.png",
+        "bracelets/BC-OX-03(1).png"
+      ],
+      "primary": "bracelets/BC-OX-03.png"
+    },
+    "BC-OX-04": {
+      "paths": [
+        "bracelets/BC-OX-04.png",
+        "bracelets/BC-OX-04(1).png"
+      ],
+      "primary": "bracelets/BC-OX-04.png"
+    },
+    "BC-OX-05": {
+      "paths": [
+        "bracelets/BC-OX-05.png"
+      ],
+      "primary": "bracelets/BC-OX-05.png"
+    },
+    "BC-IT-01": {
+      "paths": [
+        "bracelets/BC-IT-01.png",
+        "bracelets/BC-IT-01_1.png",
+        "bracelets/BC-IT-01_1(1).png"
+      ],
+      "primary": "bracelets/BC-IT-01.png"
+    },
+    "BC-IT-02": {
+      "paths": [
+        "bracelets/BC-IT-02.png",
+        "bracelets/BC-IT-02_1.png",
+        "bracelets/BC-IT-02(1).png"
+      ],
+      "primary": "bracelets/BC-IT-02.png"
+    },
+    "BC-WS-01": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-WS-02": {
+      "paths": [
+        "bracelets/BC-WS-02.png",
+        "bracelets/BC-WS-02_1.png",
+        "bracelets/BC-WS-02(1).png"
+      ],
+      "primary": "bracelets/BC-WS-02.png"
+    },
+    "BC-WS-03": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-WS-04": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-WS-05": {
+      "paths": [],
+      "primary": null
+    },
+    "BC-PO-01": {
+      "paths": [
+        "bracelets/BC-PO-01.png"
+      ],
+      "primary": "bracelets/BC-PO-01.png"
+    },
+    "BC-PO-02": {
+      "paths": [
+        "bracelets/BC-PO-02.png"
+      ],
+      "primary": "bracelets/BC-PO-02.png"
+    },
+    "BC-PO-03": {
+      "paths": [
+        "bracelets/BC-PO-03.png"
+      ],
+      "primary": "bracelets/BC-PO-03.png"
+    },
+    "ER-FU-01": {
+      "paths": [
+        "earrings/ER-FU-01.png",
+        "earrings/ER-FU-01(1).png"
+      ],
+      "primary": "earrings/ER-FU-01.png"
+    },
+    "ER-OX-02": {
+      "paths": [
+        "earrings/ER-OX-02.png",
+        "earrings/ER-OX-02(1).png"
+      ],
+      "primary": "earrings/ER-OX-02.png"
+    },
+    "ER-PO-01": {
+      "paths": [],
+      "primary": null
+    },
+    "ER-PO-02": {
+      "paths": [
+        "earrings/ER-PO-02.png",
+        "earrings/ER-PO-02(1).png"
+      ],
+      "primary": "earrings/ER-PO-02.png"
+    },
+    "ER-PO-03": {
+      "paths": [
+        "earrings/ER-PO-03.png",
+        "earrings/ER-PO-03(1).png"
+      ],
+      "primary": "earrings/ER-PO-03.png"
+    },
+    "ER-PO-04": {
+      "paths": [
+        "earrings/ER-PO-04.png",
+        "earrings/ER-PO-04(1).png",
+        "earrings/ER-PO-04(2).png"
+      ],
+      "primary": "earrings/ER-PO-04.png"
+    },
+    "ER-TM-01": {
+      "paths": [
+        "earrings/ER-TM-01.png",
+        "earrings/ER-TM-01(1).png",
+        "earrings/ER-TM-01(2).png"
+      ],
+      "primary": "earrings/ER-TM-01.png"
+    },
+    "ER-DI-01": {
+      "paths": [
+        "earrings/ER-DI-01.png",
+        "earrings/ER-DI-01(1).png"
+      ],
+      "primary": "earrings/ER-DI-01.png"
+    },
+    "PS-PO-01": {
+      "paths": [
+        "pendant set/PS-PO-01.png",
+        "pendant set/PS-PO-01(1).png"
+      ],
+      "primary": "pendant set/PS-PO-01.png"
+    },
+    "NC-WS-01": {
+      "paths": [
+        "chains/NC-WS-01.png",
+        "chains/NC-WS-01(1).png",
+        "chains/NC-WS-01(2).png"
+      ],
+      "primary": "chains/NC-WS-01.png"
+    },
+    "NC-WS-02": {
+      "paths": [
+        "chains/NC-WS-02.1",
+        "chains/NC-WS-02.png"
+      ],
+      "primary": "chains/NC-WS-02.1"
+    },
+    "NC-WS-03": {
+      "paths": [
+        "chains/NC-WS-03.png",
+        "chains/NC-WS-03(1).png"
+      ],
+      "primary": "chains/NC-WS-03.png"
+    },
+    "NC-WS-04": {
+      "paths": [
+        "chains/NC-WS-04.png",
+        "chains/NC-WS-04(1).png"
+      ],
+      "primary": "chains/NC-WS-04.png"
+    },
+    "NC-WS-05": {
+      "paths": [
+        "chains/NC-WS-05.png",
+        "chains/NC-WS-05(1).png"
+      ],
+      "primary": "chains/NC-WS-05.png"
+    },
+    "NC-WS-06": {
+      "paths": [
+        "chains/NC-WS-06.png",
+        "chains/NC-WS-06(1).png"
+      ],
+      "primary": "chains/NC-WS-06.png"
+    },
+    "NC-WS-07": {
+      "paths": [
+        "chains/NC-WS-07.png",
+        "chains/NC-WS-07(1).png",
+        "chains/NC-WS-07(2).png"
+      ],
+      "primary": "chains/NC-WS-07.png"
+    },
+    "ER-PO-05": {
+      "paths": [
+        "earrings/ER-PO-05-NEW.png",
+        "earrings/ER-PO-05.png",
+        "earrings/ER-PO-05(1).png"
+      ],
+      "primary": "earrings/ER-PO-05-NEW.png"
+    },
+    "ER-PO-06": {
+      "paths": [],
+      "primary": null
+    },
+    "ER-CS-01": {
+      "paths": [
+        "earrings/ER-CS-01.png",
+        "earrings/ER-CS-01(1).png"
+      ],
+      "primary": "earrings/ER-CS-01.png"
+    },
+    "ER-FU-02": {
+      "paths": [
+        "earrings/ER-FU-02.png"
+      ],
+      "primary": "earrings/ER-FU-02.png"
+    },
+    "ER-FU-03": {
+      "paths": [],
+      "primary": null
+    },
+    "ER-FU-04": {
+      "paths": [],
+      "primary": null
+    },
+    "AN-WS-01": {
+      "paths": [
+        "anklets/AN-WS-01.png",
+        "anklets/AN-WS-01(1).png"
+      ],
+      "primary": "anklets/AN-WS-01.png"
+    },
+    "BO-WS-01": {
+      "paths": [
+        "brooches/BO-WS-01.png",
+        "brooches/BO-WS-01_1.png",
+        "brooches/BO-WS-01_2.png"
+      ],
+      "primary": "brooches/BO-WS-01.png"
+    },
+    "BO-WS-02": {
+      "paths": [
+        "brooches/BO-WS-02.1",
+        "brooches/BO-WS-02.png"
+      ],
+      "primary": "brooches/BO-WS-02.1"
+    },
+    "BO-WS-03": {
+      "paths": [
+        "brooches/BO-WS-03.1",
+        "brooches/BO-WS-03.png",
+        "brooches/BO-WS-03(1).png"
+      ],
+      "primary": "brooches/BO-WS-03.1"
+    },
+    "BO-WS-04": {
+      "paths": [
+        "brooches/BO-WS-04.1",
+        "brooches/BO-WS-04.png"
+      ],
+      "primary": "brooches/BO-WS-04.1"
+    },
+    "BO-WS-05": {
+      "paths": [
+        "brooches/BO-WS-05.1",
+        "brooches/BO-WS-05.png",
+        "brooches/BO-WS-05(1).png"
+      ],
+      "primary": "brooches/BO-WS-05.1"
+    },
+    "BO-WS-06": {
+      "paths": [
+        "brooches/BO-WS-06.1",
+        "brooches/BO-WS-06.png"
+      ],
+      "primary": "brooches/BO-WS-06.1"
+    },
+    "BO-WS-07": {
+      "paths": [
+        "brooches/BO-WS-07.1",
+        "brooches/BO-WS-07.png"
+      ],
+      "primary": "brooches/BO-WS-07.1"
+    },
+    "BO-WS-08": {
+      "paths": [
+        "brooches/BO-WS-08.1",
+        "brooches/BO-WS-08.png"
+      ],
+      "primary": "brooches/BO-WS-08.1"
+    },
+    "BO-WS-09": {
+      "paths": [
+        "brooches/BO-WS-09.1",
+        "brooches/BO-WS-09.png"
+      ],
+      "primary": "brooches/BO-WS-09.1"
+    },
+    "BO-WS-10": {
+      "paths": [
+        "brooches/BO-WS-10.1",
+        "brooches/BO-WS-10.png"
+      ],
+      "primary": "brooches/BO-WS-10.1"
+    },
+    "BO-WS-11": {
+      "paths": [
+        "brooches/BO-WS-11.png",
+        "brooches/BO-WS-11(1).png"
+      ],
+      "primary": "brooches/BO-WS-11.png"
+    },
+    "BO-WS-12": {
+      "paths": [
+        "brooches/BO-WS-12.1",
+        "brooches/BO-WS-12.png"
+      ],
+      "primary": "brooches/BO-WS-12.1"
+    },
+    "BO-WS-13": {
+      "paths": [
+        "brooches/BO-WS-13.1",
+        "brooches/BO-WS-13.png"
+      ],
+      "primary": "brooches/BO-WS-13.1"
+    },
+    "BO-WS-14": {
+      "paths": [
+        "brooches/BO-WS-14.1",
+        "brooches/BO-WS-14.png"
+      ],
+      "primary": "brooches/BO-WS-14.1"
+    },
+    "BO-WS-15": {
+      "paths": [
+        "brooches/BO-WS-15.1",
+        "brooches/BO-WS-15.png"
+      ],
+      "primary": "brooches/BO-WS-15.1"
+    },
+    "BO-WS-16": {
+      "paths": [
+        "brooches/BO-WS-16.1",
+        "brooches/BO-WS-16.png"
+      ],
+      "primary": "brooches/BO-WS-16.1"
+    },
+    "BO-WS-17": {
+      "paths": [
+        "brooches/BO-WS-17.1",
+        "brooches/BO-WS-17.png"
+      ],
+      "primary": "brooches/BO-WS-17.1"
+    },
+    "BO-WS-18": {
+      "paths": [
+        "brooches/BO-WS-18.1",
+        "brooches/BO-WS-18.png"
+      ],
+      "primary": "brooches/BO-WS-18.1"
+    },
+    "BO-WS-19": {
+      "paths": [
+        "brooches/BO-WS-19.1",
+        "brooches/BO-WS-19.png"
+      ],
+      "primary": "brooches/BO-WS-19.1"
+    },
+    "BO-WS-20": {
+      "paths": [
+        "brooches/BO-WS-20.1",
+        "brooches/BO-WS-20.png"
+      ],
+      "primary": "brooches/BO-WS-20.1"
+    },
+    "BO-WS-21": {
+      "paths": [
+        "brooches/BO-WS-21_RS.1",
+        "brooches/BO-WS-21-RS.png",
+        "brooches/BO-WS-21-S.1",
+        "brooches/BO-WS-21-S.png"
+      ],
+      "primary": "brooches/BO-WS-21_RS.1"
+    },
+    "BO-WS-22": {
+      "paths": [
+        "brooches/BO-WS-22.1",
+        "brooches/BO-WS-22.png"
+      ],
+      "primary": "brooches/BO-WS-22.1"
+    },
+    "BO-WS-23": {
+      "paths": [
+        "brooches/BO-WS-23.1",
+        "brooches/BO-WS-23.png"
+      ],
+      "primary": "brooches/BO-WS-23.1"
+    },
+    "BO-WS-24": {
+      "paths": [
+        "brooches/BO-WS-24.1",
+        "brooches/BO-WS-24.png"
+      ],
+      "primary": "brooches/BO-WS-24.1"
+    },
+    "BO-WS-25": {
+      "paths": [
+        "brooches/BO-WS-25.1",
+        "brooches/BO-WS-25.png"
+      ],
+      "primary": "brooches/BO-WS-25.1"
+    },
+    "BO-WS-26": {
+      "paths": [
+        "brooches/BO-WS-26.1",
+        "brooches/BO-WS-26.png"
+      ],
+      "primary": "brooches/BO-WS-26.1"
+    },
+    "BO-WS-27": {
+      "paths": [
+        "brooches/BO-WS-27.1",
+        "brooches/BO-WS-27.png"
+      ],
+      "primary": "brooches/BO-WS-27.1"
+    },
+    "BO-WS-28": {
+      "paths": [
+        "brooches/BO-WS-28.1",
+        "brooches/BO-WS-28.png"
+      ],
+      "primary": "brooches/BO-WS-28.1"
+    },
+    "BO-WS-29": {
+      "paths": [
+        "brooches/BO-WS-29.1",
+        "brooches/BO-WS-29.png"
+      ],
+      "primary": "brooches/BO-WS-29.1"
+    },
+    "BO-WS-30": {
+      "paths": [
+        "brooches/BO-WS-30.1",
+        "brooches/BO-WS-30.png"
+      ],
+      "primary": "brooches/BO-WS-30.1"
+    },
+    "BO-WS-31": {
+      "paths": [
+        "brooches/BO-WS-31.1",
+        "brooches/BO-WS-31.png",
+        "brooches/BO-WS-31(1).1"
+      ],
+      "primary": "brooches/BO-WS-31.1"
+    },
+    "BO-WS-32": {
+      "paths": [
+        "brooches/BO-WS-32.1",
+        "brooches/BO-WS-32.png"
+      ],
+      "primary": "brooches/BO-WS-32.1"
+    },
+    "BO-WS-33": {
+      "paths": [
+        "brooches/BO-WS-33.1",
+        "brooches/BO-WS-33.png",
+        "brooches/BO-WS-33(1).png"
+      ],
+      "primary": "brooches/BO-WS-33.1"
+    },
+    "BO-WS-34": {
+      "paths": [
+        "brooches/BO-WS-34.1",
+        "brooches/BO-WS-34.png"
+      ],
+      "primary": "brooches/BO-WS-34.1"
+    },
+    "BO-WS-35": {
+      "paths": [
+        "brooches/BO-WS-35.1",
+        "brooches/BO-WS-35.png"
+      ],
+      "primary": "brooches/BO-WS-35.1"
+    },
+    "BO-WS-36": {
+      "paths": [
+        "brooches/BO-WS-36.1",
+        "brooches/BO-WS-36.png"
+      ],
+      "primary": "brooches/BO-WS-36.1"
+    },
+    "ER-FU-05": {
+      "paths": [
+        "earrings/ER-FU-05.png"
+      ],
+      "primary": "earrings/ER-FU-05.png"
+    },
+    "ER-OX-01": {
+      "paths": [
+        "earrings/ER-OX-01.png",
+        "earrings/ER-OX-01(1).png"
+      ],
+      "primary": "earrings/ER-OX-01.png"
+    },
+    "ER-WS-01": {
+      "paths": [
+        "earrings/ER-WS-01.png",
+        "earrings/ER-WS-01(1).png",
+        "earrings/ER-WS-01(2).png"
+      ],
+      "primary": "earrings/ER-WS-01.png"
+    },
+    "ER-OX-03": {
+      "paths": [
+        "earrings/ER-OX-03.png",
+        "earrings/ER-OX-03(1).png"
+      ],
+      "primary": "earrings/ER-OX-03.png"
+    },
+    "ER-OX-04": {
+      "paths": [
+        "earrings/ER-OX-04.png",
+        "earrings/ER-OX-04(1).png"
+      ],
+      "primary": "earrings/ER-OX-04.png"
+    },
+    "ER-OX-05": {
+      "paths": [],
+      "primary": null
+    },
+    "ER-PO-07": {
+      "paths": [
+        "earrings/ER-PO-07-NEW.png",
+        "earrings/ER-PO-07.png",
+        "earrings/ER-PO-07(1).png"
+      ],
+      "primary": "earrings/ER-PO-07-NEW.png"
+    },
+    "ER-DI-02": {
+      "paths": [
+        "earrings/ER-DI-02.png",
+        "earrings/ER-DI-02(1).png"
+      ],
+      "primary": "earrings/ER-DI-02.png"
+    },
+    "ER-PO-08": {
+      "paths": [
+        "earrings/ER-PO-08.png",
+        "earrings/ER-PO-08(1).png"
+      ],
+      "primary": "earrings/ER-PO-08.png"
+    },
+    "ER-PO-09": {
+      "paths": [
+        "earrings/ER-PO-09.png",
+        "earrings/ER-PO-09(1).png"
+      ],
+      "primary": "earrings/ER-PO-09.png"
+    },
+    "ER-PO-10": {
+      "paths": [
+        "earrings/ER-PO-10.png",
+        "earrings/ER-PO-10(1).png"
+      ],
+      "primary": "earrings/ER-PO-10.png"
+    },
+    "ER-TM-02": {
+      "paths": [
+        "earrings/ER-TM-02.png"
+      ],
+      "primary": "earrings/ER-TM-02.png"
+    },
+    "ER-PO-11": {
+      "paths": [
+        "earrings/ER-PO-11.png",
+        "earrings/ER-PO-11(1).png"
+      ],
+      "primary": "earrings/ER-PO-11.png"
+    },
+    "ER-PO-12": {
+      "paths": [
+        "earrings/ER-PO-12.png",
+        "earrings/ER-PO-12(1).png"
+      ],
+      "primary": "earrings/ER-PO-12.png"
+    },
+    "ER-DI-03": {
+      "paths": [
+        "earrings/ER-DI-03.png",
+        "earrings/ER-DI-03(1).png",
+        "earrings/ER-DI-03(2).png"
+      ],
+      "primary": "earrings/ER-DI-03.png"
+    }
+  },
+  "unmappedFiles": [
+    "bracelets/D31.1.png",
+    "bracelets/D31.2.png",
+    "bracelets/D32.1.png",
+    "bracelets/D33.1.png",
+    "bracelets/D35.1.png",
+    "bracelets/D36.1.png",
+    "bracelets/D37.1.png",
+    "bracelets/D38.1.png",
+    "bracelets/D41.1.png",
+    "bracelets/D47.1.png",
+    "bracelets/D47.2.png",
+    "bracelets/D49.1.png",
+    "bracelets/D49.2.png",
+    "bracelets/D50.1.jpg",
+    "bracelets/D52.2.png",
+    "bracelets/D53.1.png",
+    "bracelets/D54.1.png",
+    "bracelets/D54.2.png",
+    "bracelets/D54.3.png",
+    "bracelets/D54.4.png",
+    "bracelets/D55.1.png",
+    "bracelets/D60.1.png",
+    "bracelets/d50.1.png",
+    "brooches/D38.1.png",
+    "chains/D8.1.png",
+    "chains/D8.2.png",
+    "kids/D1.1.png",
+    "kids/D1.2.png",
+    "kids/D2.1.png",
+    "necklaces/D1.1.png",
+    "necklaces/D1.2.png",
+    "necklaces/D18.1.png",
+    "necklaces/D2.1.png",
+    "necklaces/D2.2.png",
+    "necklaces/D7.1.png",
+    "necklaces/D7.2.png",
+    "necklaces/D7.3.png",
+    "necklaces/D9.1.png",
+    "necklaces/D9.2.png",
+    "pendant set/D1.1.png",
+    "pendant set/D1.2.png",
+    "pendant set/D2.1.png",
+    "pendant set/D2.2.png",
+    "pendants/D2.1.png",
+    "pendants/D2.2.png",
+    "pendants/D3.1.png",
+    "pendants/D3.2.png",
+    "pendants/PN-DN-01(1).png",
+    "pendants/PN-DN-01(2).png",
+    "pendants/PN-DN-01.png"
+  ],
+  "skusWithoutImages": [
+    "BC-BN-005",
+    "BC-BN-011",
+    "BC-BN-014",
+    "BC-OX-02",
+    "BC-WS-01",
+    "BC-WS-03",
+    "BC-WS-04",
+    "BC-WS-05",
+    "ER-FU-03",
+    "ER-FU-04",
+    "ER-OX-05",
+    "ER-PO-01",
+    "ER-PO-06"
+  ],
+  "imageSkusNotInCatalog": [
+    "BC-BN-15",
+    "BC-BN-16",
+    "BC-BN-17",
+    "BC-IT-03",
+    "BG-OX-01",
+    "BG-OX-02",
+    "BG-OX-03",
+    "BG-OX-04",
+    "BG-OX-05",
+    "BG-OX-06",
+    "BG-OX-07",
+    "BG-OX-08",
+    "BG-OX-09",
+    "BG-OX-19",
+    "BG-OX-20",
+    "BG-OX-21",
+    "BG-OX-22",
+    "BG-OX-24",
+    "BG-OX-25",
+    "BG-OX-26",
+    "BG-OX-27",
+    "BG-OX-29",
+    "BG-OX-30",
+    "BG-OX-31",
+    "BG-PO-01",
+    "BG-PO-02",
+    "BG-PO-03",
+    "BO-WS-37",
+    "ER-CS-03",
+    "ER-DI-04",
+    "ER-DI-05",
+    "ER-DI-06",
+    "ER-DI-08",
+    "ER-DI-09",
+    "ER-DI-10",
+    "ER-DI-13",
+    "ER-DI-14",
+    "ER-DI-15",
+    "ER-DI-16",
+    "ER-FU-06",
+    "ER-FU-07",
+    "ER-OX-06",
+    "ER-OX-07",
+    "ER-PO-13",
+    "ER-PO-15",
+    "ER-PO-16",
+    "ER-PO-17",
+    "ER-PO-19",
+    "ER-WS-02",
+    "ER-WS-03",
+    "ER-WS-04",
+    "ER-WS-05",
+    "ER-WS-06",
+    "NC-IN-01",
+    "NC-IN-02",
+    "NC-WS-12",
+    "NC-WS-15",
+    "NC-WS-16",
+    "NC-WS-18",
+    "PS-PO-02"
+  ],
+  "stats": {
+    "catalogSkus": 106,
+    "catalogWithImages": 93,
+    "catalogMissingImages": 13,
+    "distinctImageSkus": 153,
+    "unmappedFileCount": 50,
+    "imageSkusNotInCatalog": 60
+  }
+}

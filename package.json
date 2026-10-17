@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build:products": "node scripts/build-products.js",
+    "convert:products": "node scripts/convert-xlsx-to-json.js",
+    "build:mapping": "node scripts/build-product-image-mapping.js",
+    "build:products": "npm run build:mapping && node scripts/build-products.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
