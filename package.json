@@ -9,8 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "convert:products": "node scripts/convert-xlsx-to-json.js",
+    "catalog:report": "node scripts/preview-upload-report.js",
     "build:mapping": "node scripts/build-product-image-mapping.js",
-    "build:products": "npm run build:mapping && node scripts/build-products.js",
+    "build:products": "npm run convert:products && npm run build:mapping && node scripts/build-products.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

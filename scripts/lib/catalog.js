@@ -20,6 +20,7 @@ export const IMAGE_CATEGORY_DIRS = [
   'pendant set',
   'anklets',
   'kids',
+  'public',
 ];
 
 export const IMAGE_EXTENSIONS = new Set([
@@ -147,6 +148,27 @@ export function applyImageOverrides(bySku, overrides, rootDir) {
   }
 }
 
+export function parseWeightGrams(raw) {
+  const s = norm(raw);
+  if (!s) return 0;
+  const m = s.match(/(\d+(?:\.\d+)?)/);
+  return m ? parseFloat(m[1]) : 0;
+}
+
+export function readProductsCatalog(catalogPath) {
+  if (!fs.existsSync(catalogPath)) {
+    throw new Error(`products_catalog.json not found at ${catalogPath}`);
+  }
+  const data = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+  if (!Array.isArray(data)) {
+    throw new Error('products_catalog.json must be an array');
+  }
+  return data;
+}
+
+/**
+ * @deprecated Legacy xlsx export format — prefer products_catalog.json.
+ */
 export function readProductsRaw(productsRawPath) {
   if (!fs.existsSync(productsRawPath)) {
     throw new Error(`products_raw.json not found at ${productsRawPath}`);
@@ -154,10 +176,7 @@ export function readProductsRaw(productsRawPath) {
   return JSON.parse(fs.readFileSync(productsRawPath, 'utf8'));
 }
 
-/**
- * Parse rows from products_raw.json (xlsx → json via convert-xlsx-to-json.js).
- */
-export function parseCatalogRows(productsRaw) {
+export function parseCatalogRowsFromLegacyRaw(productsRaw) {
   if (!Array.isArray(productsRaw)) {
     throw new Error('products_raw.json must be an array');
   }
@@ -176,14 +195,33 @@ export function parseCatalogRows(productsRaw) {
       genderRaw: norm(row['__EMPTY_2']),
       category: norm(row['__EMPTY_3']) || 'Bracelet',
       subcategory: norm(row['__EMPTY_4']),
-      weight: parseFloat(row['__EMPTY_10']) || 0,
+      weight: parseWeightGrams(row['__EMPTY_10']),
       priceInr: row['__EMPTY_11'],
       priceTier: row['__EMPTY_12'],
       description: norm(row['__EMPTY_7']),
       keywords: norm(row['__EMPTY_15']),
+      excelIssue: '',
     });
   }
   return rows;
+}
+
+/** Load catalog rows from products_catalog.json or legacy products_raw.json. */
+export function loadCatalogRows(rootDir) {
+  const catalogPath = path.join(rootDir, 'products_catalog.json');
+  if (fs.existsSync(catalogPath)) {
+    return readProductsCatalog(catalogPath);
+  }
+  const rawPath = path.join(rootDir, 'products_raw.json');
+  return parseCatalogRowsFromLegacyRaw(readProductsRaw(rawPath));
+}
+
+/** @alias loadCatalogRows */
+export function parseCatalogRows(source) {
+  if (Array.isArray(source)) {
+    return parseCatalogRowsFromLegacyRaw(source);
+  }
+  throw new Error('parseCatalogRows expects legacy array; use loadCatalogRows(rootDir) instead');
 }
 
 export function normaliseGender(raw) {
@@ -198,23 +236,69 @@ export function parseExcelPrice(priceInr, priceTier) {
   const rawTier = norm(priceTier);
 
   if (rawInr) {
-    const num = parseFloat(rawInr);
-    if (!Number.isNaN(num)) {
-      return { priceRaw: rawInr, priceAmount: num, basePriceAmount: num };
+    const inrNum = parseFloat(String(priceInr).replace(/[^\d.]/g, ''));
+    if (!Number.isNaN(inrNum) && inrNum > 0) {
+      const display = inrNum >= 100 ? String(Math.round(inrNum)) : rawInr;
+      return {
+        priceRaw: display,
+        priceAmount: Math.round(inrNum),
+        basePriceAmount: Math.round(inrNum),
+      };
     }
   }
 
   if (rawTier) {
-    const match = rawTier.match(/(\d+(?:\.\d+)?)/);
-    if (match) {
-      const num = parseFloat(match[1]);
-      const amount = Math.round(num * 100);
+    const tierClean = rawTier.replace(/\s+/g, '');
+    const tierMatch = tierClean.match(/^P(\d+(?:\.\d+)?)$/i);
+    if (tierMatch) {
+      const amount = Math.round(parseFloat(tierMatch[1]) * 100);
+      return { priceRaw: tierClean.toUpperCase(), priceAmount: amount, basePriceAmount: amount };
+    }
+    const num = parseFloat(rawTier.replace(/[^\d.]/g, ''));
+    if (!Number.isNaN(num) && num > 0) {
+      const amount = num >= 100 ? Math.round(num) : Math.round(num * 100);
       return { priceRaw: rawTier, priceAmount: amount, basePriceAmount: amount };
     }
     return { priceRaw: rawTier, priceAmount: 0, basePriceAmount: 0 };
   }
 
   return { priceRaw: '', priceAmount: 0, basePriceAmount: 0 };
+}
+
+export function formatPriceDisplay(price) {
+  if (!price.priceRaw) return 'Price on request';
+  if (/^P\d/i.test(price.priceRaw)) return price.priceRaw.toUpperCase();
+  if (price.priceAmount > 0) {
+    return `₹${Number(price.priceAmount).toLocaleString('en-IN')}`;
+  }
+  return price.priceRaw;
+}
+
+/**
+ * Website-ready checks: Name, Gender, Price, Image (per client brief).
+ */
+export function assessCatalogRow(row, imagePaths, parsedPrice) {
+  const reasons = [];
+  const warnings = [];
+
+  if (row.excelIssue) warnings.push(`Excel: ${row.excelIssue}`);
+  if (!norm(row.name)) reasons.push('Missing product name');
+  if (!norm(row.genderRaw)) reasons.push('Missing gender');
+  if (!parsedPrice.priceAmount || parsedPrice.priceAmount <= 0) {
+    reasons.push('Missing or invalid price');
+  }
+  if (!imagePaths || imagePaths.length === 0) {
+    reasons.push('No image file matched for SKU');
+  }
+  if (/sold\s*out/i.test(row.excelIssue || '')) {
+    warnings.push('Marked sold out in Excel');
+  }
+
+  const storefrontReady =
+    reasons.length === 0 &&
+    !/sold\s*out/i.test(row.excelIssue || '');
+
+  return { storefrontReady, reasons, warnings };
 }
 
 export function resolveAbsolutePath(rootDir, relPath) {
@@ -283,7 +367,7 @@ export function catalogRowsToProducts(catalogRows, mappingBySku) {
       priceRaw: price.priceRaw,
       basePriceAmount: price.basePriceAmount,
       priceAmount: price.priceAmount,
-      priceDisplay: price.priceRaw.startsWith('P') ? price.priceRaw : price.priceRaw,
+      priceDisplay: formatPriceDisplay(price),
       description: row.description,
       keywords: row.keywords,
       localImages: paths,

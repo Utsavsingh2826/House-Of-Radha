@@ -7,24 +7,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  buildImageMapping,
-  parseCatalogRows,
-  readProductsRaw,
-} from './lib/catalog.js';
+import { buildImageMapping, loadCatalogRows } from './lib/catalog.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, '..');
-const PRODUCTS_RAW = path.join(ROOT, 'products_raw.json');
 const OVERRIDES = path.join(__dirname, 'image-overrides.json');
 const OUT_PATH = path.join(ROOT, 'product-image-mapping.json');
 const AUDIT_PATH = path.join(ROOT, 'reports', 'mapping-audit.json');
 
 function main() {
-  const productsRaw = readProductsRaw(PRODUCTS_RAW);
-  const catalogRows = parseCatalogRows(productsRaw);
+  const catalogRows = loadCatalogRows(ROOT);
   const mapping = buildImageMapping({
     rootDir: ROOT,
     catalogRows,

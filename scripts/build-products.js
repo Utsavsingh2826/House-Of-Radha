@@ -10,15 +10,13 @@ import { fileURLToPath } from 'node:url';
 import {
   buildImageMapping,
   catalogRowsToProducts,
-  parseCatalogRows,
-  readProductsRaw,
+  loadCatalogRows,
 } from './lib/catalog.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, '..');
-const PRODUCTS_RAW = path.join(ROOT, 'products_raw.json');
 const MAPPING_PATH = path.join(ROOT, 'product-image-mapping.json');
 const OVERRIDES = path.join(__dirname, 'image-overrides.json');
 const OUT_DIR = path.join(ROOT, 'src', 'data');
@@ -38,8 +36,7 @@ function loadMapping(catalogRows) {
 }
 
 function main() {
-  const productsRaw = readProductsRaw(PRODUCTS_RAW);
-  const catalogRows = parseCatalogRows(productsRaw);
+  const catalogRows = loadCatalogRows(ROOT);
   const mappingBySku = loadMapping(catalogRows);
   const products = catalogRowsToProducts(catalogRows, mappingBySku);
 

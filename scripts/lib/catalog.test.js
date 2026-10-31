@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { extractSkuFromBasename, isScannableImageEntry } from './catalog.js';
+import {
+  extractSkuFromBasename,
+  isScannableImageEntry,
+  parseExcelPrice,
+} from './catalog.js';
 
 describe('extractSkuFromBasename', () => {
   it('parses standard SKU filenames', () => {
@@ -20,5 +24,17 @@ describe('extractSkuFromBasename', () => {
 describe('isScannableImageEntry', () => {
   it('accepts SKU-like extension-less names', () => {
     expect(isScannableImageEntry('BO-WS-02.1')).toBe(true);
+  });
+});
+
+describe('parseExcelPrice', () => {
+  it('prefers INR column when numeric', () => {
+    const p = parseExcelPrice(7500, 'P75');
+    expect(p.priceAmount).toBe(7500);
+  });
+
+  it('parses tier codes', () => {
+    const p = parseExcelPrice('', 'P 75');
+    expect(p.priceAmount).toBe(7500);
   });
 });

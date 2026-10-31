@@ -1,0 +1,1063 @@
+{
+  "generatedAt": "2026-10-30T04:10:52.544Z",
+  "catalogSkus": 185,
+  "savedToMongo": 185,
+  "imagesUploaded": 287,
+  "storefrontLive": 111,
+  "mappingStats": {
+    "catalogSkus": 185,
+    "catalogWithImages": 130,
+    "catalogMissingImages": 55,
+    "distinctImageSkus": 154,
+    "unmappedFileCount": 51,
+    "imageSkusNotInCatalog": 24
+  },
+  "failureCount": 82,
+  "failures": [
+    {
+      "sku": "BC-BN-005",
+      "name": "Band Bracelet Casino Night",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: NO PIC"
+      ]
+    },
+    {
+      "sku": "BC-BN-011",
+      "name": "Band Bracelet Pure LV",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-BN-014",
+      "name": "Band Bracelet Luxury love 3",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-IT-01",
+      "name": "Twisted Love",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 3500,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-IT-02",
+      "name": "3 toned 5-line Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-IT-04",
+      "name": "Stackable Beaded Flexible Charm Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 3500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-IT-05",
+      "name": "Trio Layered Paperclip Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-OX-01",
+      "name": "Intricate Love",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 15000,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-OX-02",
+      "name": "Ginni Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 15000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU",
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-OX-03",
+      "name": "Indian Charms Bracelet - Pink Flowers",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 9000,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-OX-04",
+      "name": "Indian Charms Bracelet - Garba balls",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 12500,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-OX-05",
+      "name": "Indian Charms Bracelet - Daisies",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 9000,
+      "imagesUploaded": 1,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-OX-06",
+      "name": "Oxidized Sapphire Marquise Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU",
+        "Excel: not uploaded, price not added"
+      ]
+    },
+    {
+      "sku": "BC-PO-01",
+      "name": "Polki with Mor studded Sapphires",
+      "category": "Bracelet",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 1,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-PO-02",
+      "name": "Green Pearly Night Wrist Cuff",
+      "category": "Bracelet",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 1,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "Excel: SOLD OUT",
+        "Marked sold out in Excel"
+      ]
+    },
+    {
+      "sku": "BC-PO-03",
+      "name": "Polki Gold Bracelet",
+      "category": "Bracelet",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 1,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-WS-01",
+      "name": "Ring Cum Bracelet",
+      "category": "Bracelet",
+      "gender": "",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "No image file matched for SKU",
+        "Excel: SOLD OUT",
+        "Marked sold out in Excel"
+      ]
+    },
+    {
+      "sku": "BC-WS-02",
+      "name": "Diamond in Rose Gold Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 15000,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-WS-03",
+      "name": "Sapphire Diamonds Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU",
+        "Excel: SOLD OUT",
+        "Marked sold out in Excel"
+      ]
+    },
+    {
+      "sku": "BC-WS-04",
+      "name": "Rainbow Teardrop Pavé Tennis Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU",
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-WS-05",
+      "name": "Blue Baguette Statement Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU",
+        "Excel: not uploaded"
+      ]
+    },
+    {
+      "sku": "BC-WS-06",
+      "name": "Gradient Stone Tennis Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-07",
+      "name": "Cerulean Stone Infinity Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-08",
+      "name": "Floral Cluster",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-09",
+      "name": "Indulgence Blue Fan Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-10",
+      "name": "Sphere Charm Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-11",
+      "name": "Textured Heart Charm Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-12",
+      "name": "Nautical Wheel Charm Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-13",
+      "name": "Mother-of-Pearl Clover",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-14",
+      "name": "Layered Pear-Cut CZ Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-15",
+      "name": "Open-Work Rose Charm Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 4000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-16",
+      "name": "Sapphire Leaf Cluster Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-17",
+      "name": "Rainbow Marquise Cluster Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-18",
+      "name": "Multi-Color Baguette Pavé Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-19",
+      "name": "Starry Night Double-Chain Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-20",
+      "name": "Handbag Charm Multi-Strand Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BC-WS-21",
+      "name": "Sapphire Bone Motif Silver Bracelet",
+      "category": "Bracelet",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-10",
+      "name": "GINNI",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 9000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-11",
+      "name": "BG-OX-11",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-12",
+      "name": "BG-OX-12",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-13",
+      "name": "BG-OX-13",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-14",
+      "name": "BG-OX-14",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-15",
+      "name": "BG-OX-15",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-16",
+      "name": "BG-OX-16",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-17",
+      "name": "BG-OX-17",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-18",
+      "name": "GREEN AND RED STONE",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-23",
+      "name": "BG-OX-23",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 12500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-28",
+      "name": "BG-OX-28",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 5500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-32",
+      "name": "BG-OX-32",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-33",
+      "name": "BG-OX-33",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-34",
+      "name": "BG-OX-34",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "BG-OX-35",
+      "name": "BG-OX-35",
+      "category": "Bangles",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-CS-01",
+      "name": "Red Danglers",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-DI-03",
+      "name": "The Emerald & Midnight Blue Enamel Chain Link Drops",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-DI-07",
+      "name": "Anti-Anxiety Earrings",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU",
+        "Excel: SOLD OUT",
+        "Marked sold out in Excel"
+      ]
+    },
+    {
+      "sku": "ER-DI-11",
+      "name": "MOP with hint of silver",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-DI-12",
+      "name": "jhumki peacock",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 5000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-DI-17",
+      "name": "Layered Pentagon",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-FU-03",
+      "name": "Royal Procession DangleRS",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-FU-04",
+      "name": "Chand-Nandi Halo Studs",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 17500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-OX-02",
+      "name": "Mother of Pearl Drops",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-OX-05",
+      "name": "The Royal Blue Jhumki Chain Drops",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-OX-08",
+      "name": "Blue jhumkas",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 15000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU",
+        "Excel: missing photo"
+      ]
+    },
+    {
+      "sku": "ER-OX-09",
+      "name": "Leaf blue stone",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 10000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-OX-10",
+      "name": "Pink square",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 7500,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-OX-11",
+      "name": "ER-OX-11",
+      "category": "Jewelry",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-OX-12",
+      "name": "ER-OX-12",
+      "category": "Jewelry",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-PO-01",
+      "name": "Love triangle with a Polki",
+      "category": "Earrings",
+      "gender": "Female",
+      "priceAmount": 16000,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-PO-04",
+      "name": "Mor Jhumkis",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-PO-05",
+      "name": "Daisy Jhumkis",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-PO-06",
+      "name": "Triple Traingles with Polki Studs",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 0,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price",
+        "No image file matched for SKU"
+      ]
+    },
+    {
+      "sku": "ER-PO-08",
+      "name": "The Polki Bali",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-TM-01",
+      "name": "Temple Peacock Flourish with meenakari",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "ER-WS-01",
+      "name": "The Pastel Floral Enamel Heart Huggie Earrings",
+      "category": "Earrings",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-01",
+      "name": "2-Layer Clover Leaf",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-02",
+      "name": "Nail Charm with Chain",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-03",
+      "name": "The Scar",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-04",
+      "name": "2-Layer Heart",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-05",
+      "name": "2-Layer Chain with medal",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-06",
+      "name": "Silver Swan with diamond",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "NC-WS-07",
+      "name": "Autumn with maple leaves",
+      "category": "Necklace",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 3,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    },
+    {
+      "sku": "PS-PO-01",
+      "name": "Layered Polki Set",
+      "category": "Pendant Set",
+      "gender": "",
+      "priceAmount": 0,
+      "imagesUploaded": 2,
+      "savedToMongo": true,
+      "reasons": [
+        "Missing gender",
+        "Missing or invalid price"
+      ]
+    }
+  ]
+}

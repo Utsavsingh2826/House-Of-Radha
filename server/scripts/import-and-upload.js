@@ -13,9 +13,9 @@ const PricingConfig = require('../models/PricingConfig');
 const { calculateDynamicPrice } = require('../utils/pricing');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const PRODUCTS_RAW_PATH = path.join(ROOT, 'products_raw.json');
 const MAPPING_PATH = path.join(ROOT, 'product-image-mapping.json');
 const OVERRIDES_PATH = path.join(ROOT, 'scripts', 'image-overrides.json');
+const FAILURES_PATH = path.join(ROOT, 'reports', 'upload-failures.json');
 const CATALOG_MODULE = path.join(ROOT, 'scripts', 'lib', 'catalog.js');
 
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -46,6 +46,12 @@ function formatError(err) {
   } catch {
     return String(err);
   }
+}
+
+function trimCategory(value) {
+  return String(value || '')
+    .trim()
+    .replace(/\s+/g, ' ');
 }
 
 const MONGO_OPTIONS = {
@@ -108,25 +114,24 @@ async function getOrCreatePricingConfig() {
 
 async function loadCatalogContext() {
   const catalog = await import(pathToFileURL(CATALOG_MODULE).href);
-  const productsRaw = catalog.readProductsRaw(PRODUCTS_RAW_PATH);
-  const catalogRows = catalog.parseCatalogRows(productsRaw);
+  const catalogRows = catalog.loadCatalogRows(ROOT);
+  console.log(`Loaded ${catalogRows.length} catalog SKU(s) from Product list.`);
 
-  let bySku;
-  if (fs.existsSync(MAPPING_PATH)) {
-    const mapping = JSON.parse(fs.readFileSync(MAPPING_PATH, 'utf8'));
-    bySku = mapping.bySku || {};
-    console.log(`Using ${path.basename(MAPPING_PATH)} for image paths.`);
-  } else {
-    console.log('No product-image-mapping.json found; scanning image folders...');
-    const built = catalog.buildImageMapping({
-      rootDir: ROOT,
-      catalogRows,
-      overridesPath: OVERRIDES_PATH,
-    });
-    bySku = built.bySku;
-  }
+  const built = catalog.buildImageMapping({
+    rootDir: ROOT,
+    catalogRows,
+    overridesPath: OVERRIDES_PATH,
+  });
+  fs.mkdirSync(path.dirname(MAPPING_PATH), { recursive: true });
+  fs.writeFileSync(MAPPING_PATH, `${JSON.stringify(built, null, 2)}\n`, 'utf8');
+  console.log(`Refreshed ${path.basename(MAPPING_PATH)} (${built.stats.catalogWithImages} SKUs with local images).`);
 
-  return { catalog, catalogRows, bySku };
+  return { catalog, catalogRows, bySku: built.bySku, mappingStats: built.stats };
+}
+
+function writeFailureReport(report) {
+  fs.mkdirSync(path.dirname(FAILURES_PATH), { recursive: true });
+  fs.writeFileSync(FAILURES_PATH, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 }
 
 async function importAndUpload() {
@@ -138,20 +143,24 @@ async function importAndUpload() {
     console.log('SEED_RESUME=1 — skipping SKUs that already have full Cloudinary galleries.');
   }
 
-  const { catalog, catalogRows, bySku } = await loadCatalogContext();
-  console.log(`Loaded ${catalogRows.length} catalog SKU(s).`);
+  const { catalog, catalogRows, bySku, mappingStats } = await loadCatalogContext();
 
   const pricingConfig = await getOrCreatePricingConfig();
   const uploadCache = new Map();
 
   let totalUploaded = 0;
   let totalSaved = 0;
+  let storefrontLive = 0;
+  const failures = [];
 
   for (const row of catalogRows) {
     const { sku } = row;
     const name = row.name;
     const mappingEntry = bySku[sku] || { paths: [] };
     const relPaths = mappingEntry.paths || [];
+    const parsedPrice = catalog.parseExcelPrice(row.priceInr, row.priceTier);
+    const assessment = catalog.assessCatalogRow(row, relPaths, parsedPrice);
+    const rowReasons = [...assessment.reasons];
 
     if (process.env.SEED_RESUME === '1' && relPaths.length > 0) {
       await ensureMongoConnected();
@@ -162,13 +171,13 @@ async function importAndUpload() {
         existing.images.length >= relPaths.length
       ) {
         console.log(`\nSkipping SKU: ${sku} (${existing.images.length}/${relPaths.length} images already in DB).`);
+        if (assessment.storefrontReady) storefrontLive += 1;
         continue;
       }
     }
 
     console.log(`\nImporting SKU: ${sku} - "${name}"`);
 
-    const parsedPrice = catalog.parseExcelPrice(row.priceInr, row.priceTier);
     const basePriceAmount = parsedPrice.basePriceAmount;
     const weight = row.weight;
 
@@ -188,17 +197,18 @@ async function importAndUpload() {
       priceStepAmount,
     });
 
-    const priceDisplay = parsedPrice.priceRaw.startsWith('P')
-      ? parsedPrice.priceRaw
+    const priceDisplay = /^P\d/i.test(parsedPrice.priceRaw)
+      ? parsedPrice.priceRaw.toUpperCase()
       : formatCurrency(priceAmount);
 
     const gender = catalog.normaliseGender(row.genderRaw);
     const uploadedUrls = [];
+    const uploadErrors = [];
 
     for (const relPath of relPaths) {
       const localPath = catalog.resolveAbsolutePath(ROOT, relPath);
       if (!fs.existsSync(localPath)) {
-        console.warn(`  [Warning] Missing local file: ${relPath}`);
+        uploadErrors.push(`Missing file: ${relPath}`);
         continue;
       }
 
@@ -206,8 +216,16 @@ async function importAndUpload() {
       if (secureUrl) {
         uploadedUrls.push(secureUrl);
         totalUploaded += 1;
+      } else {
+        uploadErrors.push(`Cloudinary upload failed: ${relPath}`);
       }
     }
+
+    if (uploadErrors.length > 0) {
+      rowReasons.push(...uploadErrors);
+    }
+
+    const available = uploadedUrls.length > 0 && parsedPrice.priceAmount > 0;
 
     try {
       await ensureMongoConnected();
@@ -219,8 +237,8 @@ async function importAndUpload() {
             name,
             gender,
             genderLabel: row.genderRaw || '',
-            category: row.category || 'Bracelet',
-            subcategory: row.subcategory || '',
+            category: trimCategory(row.category) || 'Jewelry',
+            subcategory: trimCategory(row.subcategory),
             weight,
             weightLabel: weight ? `${weight}g` : '',
             priceRaw: parsedPrice.priceRaw,
@@ -231,28 +249,67 @@ async function importAndUpload() {
             keywords: row.keywords || '',
             image: uploadedUrls[0] || null,
             images: uploadedUrls,
-            available: uploadedUrls.length > 0,
+            available,
           },
         },
         { upsert: true }
       );
       totalSaved += 1;
-      console.log(`✓ Saved product ${sku} to MongoDB.`);
+      console.log(`✓ Saved product ${sku} to MongoDB (available=${available}).`);
+      if (available && assessment.storefrontReady) storefrontLive += 1;
     } catch (err) {
-      console.error(`✗ MongoDB save failed for ${sku}:`, formatError(err));
+      rowReasons.push(`MongoDB save failed: ${formatError(err)}`);
       await ensureMongoConnected();
+    }
+
+    if (rowReasons.length > 0 || assessment.warnings.length > 0) {
+      failures.push({
+        sku,
+        name,
+        category: row.category,
+        gender: row.genderRaw,
+        priceAmount: parsedPrice.priceAmount,
+        imagesUploaded: uploadedUrls.length,
+        savedToMongo: rowReasons.every((r) => !r.startsWith('MongoDB save failed')),
+        reasons: [...new Set([...rowReasons, ...assessment.warnings])],
+      });
     }
   }
 
+  const report = {
+    generatedAt: new Date().toISOString(),
+    catalogSkus: catalogRows.length,
+    savedToMongo: totalSaved,
+    imagesUploaded: totalUploaded,
+    storefrontLive,
+    mappingStats,
+    failureCount: failures.length,
+    failures: failures.sort((a, b) => a.sku.localeCompare(b.sku)),
+  };
+
+  writeFailureReport(report);
+
   console.log('\n==================================================');
-  console.log('Seeding and Cloudinary upload completed successfully!');
-  console.log(`- Uploaded ${totalUploaded} unique images to Cloudinary.`);
+  console.log('Seeding and Cloudinary upload completed.');
   console.log(`- Saved/Updated ${totalSaved} products in MongoDB.`);
+  console.log(`- Uploaded ${totalUploaded} images to Cloudinary.`);
+  console.log(`- Storefront-live (name+gender+price+image): ${storefrontLive}`);
+  console.log(`- Issues logged: ${failures.length} → ${path.relative(ROOT, FAILURES_PATH)}`);
   console.log('==================================================');
+
+  if (failures.length > 0) {
+    console.log('\n--- Products not fully live on storefront ---');
+    for (const f of failures) {
+      console.log(`${f.sku} | ${f.name}`);
+      for (const reason of f.reasons) {
+        console.log(`   • ${reason}`);
+      }
+    }
+  }
 
   await mongoose.disconnect();
   console.log('Disconnected from MongoDB.');
-  process.exit(0);
+  process.exit(failures.length > 0 ? 0 : 0);
 }
 
 importAndUpload().catch((err) => {
