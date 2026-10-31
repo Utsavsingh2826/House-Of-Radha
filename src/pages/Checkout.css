@@ -19,6 +19,11 @@
   letter-spacing: 0.05em;
 }
 
+.checkout-guest-hint {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
 .checkout-empty {
   text-align: center;
   padding: 4rem 1rem;

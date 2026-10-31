@@ -45,11 +45,15 @@ function validateShipping(addr) {
   if (!addr || typeof addr !== 'object') {
     throw Object.assign(new Error('shippingAddress is required'), { status: 400 });
   }
-  const required = ['fullName', 'phone', 'line1', 'city', 'state', 'pincode'];
+  const required = ['fullName', 'phone', 'email', 'line1', 'city', 'state', 'pincode'];
   for (const f of required) {
     if (!addr[f] || String(addr[f]).trim() === '') {
       throw Object.assign(new Error(`shippingAddress.${f} is required`), { status: 400 });
     }
+  }
+  const email = String(addr.email).trim().toLowerCase();
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    throw Object.assign(new Error('Invalid email address'), { status: 400 });
   }
   const phoneDigits = String(addr.phone).replace(/\D/g, '');
   if (!/^\d{10}$/.test(phoneDigits)) {
@@ -62,6 +66,7 @@ function validateShipping(addr) {
   return {
     fullName: String(addr.fullName).trim(),
     phone: phoneDigits,
+    email,
     line1: String(addr.line1).trim(),
     line2: String(addr.line2 || '').trim(),
     city: String(addr.city).trim(),
@@ -69,6 +74,25 @@ function validateShipping(addr) {
     pincode: pincodeDigits,
     country: String(addr.country || 'India').trim(),
   };
+}
+
+async function resolveRawItems({ source, bodyItems, user }) {
+  if (source === 'buyNow') {
+    return bodyItems;
+  }
+  if (user) {
+    const populated = await User.findById(user._id).populate('cart.product');
+    if (!populated?.cart?.length) {
+      throw Object.assign(new Error('Cart is empty'), { status: 400 });
+    }
+    return populated.cart
+      .filter((l) => l.product)
+      .map((l) => ({ sku: l.product.sku, qty: l.qty }));
+  }
+  if (!Array.isArray(bodyItems) || bodyItems.length === 0) {
+    throw Object.assign(new Error('items are required for guest checkout'), { status: 400 });
+  }
+  return bodyItems;
 }
 
 // POST /api/orders/create
@@ -80,22 +104,14 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ success: false, error: "source must be 'cart' or 'buyNow'" });
     }
 
-    const user = await User.findById(req.user.id).populate('cart.product');
-    if (!user) return res.status(404).json({ success: false, error: 'User not found' });
-
     const shipping = validateShipping(shippingAddress);
+    const authUser = req.user && req.user.role !== 'admin' ? req.user : null;
 
-    // Resolve items.
     let rawItems;
-    if (source === 'cart') {
-      if (!user.cart || user.cart.length === 0) {
-        return res.status(400).json({ success: false, error: 'Cart is empty' });
-      }
-      rawItems = user.cart
-        .filter((l) => l.product)
-        .map((l) => ({ sku: l.product.sku, qty: l.qty }));
-    } else {
-      rawItems = bodyItems;
+    try {
+      rawItems = await resolveRawItems({ source, bodyItems, user: authUser });
+    } catch (err) {
+      return res.status(err.status || 400).json({ success: false, error: err.message });
     }
 
     const lineItems = await resolveItems(rawItems);
@@ -104,7 +120,6 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Order total must be greater than zero' });
     }
 
-    // Razorpay (lazy). If not configured, we still want a clear error.
     const rzp = getRazorpay();
     if (!rzp) {
       return res.status(503).json({
@@ -113,9 +128,11 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    // Create the DB order first (status='created') so we have an id for the receipt.
+    const confirmationToken = crypto.randomBytes(24).toString('hex');
+
     const order = await Order.create({
-      user: user._id,
+      user: authUser ? authUser._id : null,
+      confirmationToken,
       items: lineItems,
       total,
       source,
@@ -126,13 +143,15 @@ exports.createOrder = async (req, res) => {
     let rzpOrder;
     try {
       rzpOrder = await rzp.orders.create({
-        amount: total * 100, // paise
+        amount: total * 100,
         currency: 'INR',
         receipt: `ord_${order._id.toString().slice(-12)}`,
-        notes: { dbOrderId: order._id.toString(), userId: user._id.toString() },
+        notes: {
+          dbOrderId: order._id.toString(),
+          userId: authUser ? authUser._id.toString() : 'guest',
+        },
       });
     } catch (err) {
-      // Razorpay rejected the order — mark our row failed and surface a 502.
       order.status = 'failed';
       await order.save();
       return res
@@ -143,9 +162,8 @@ exports.createOrder = async (req, res) => {
     order.razorpay = { orderId: rzpOrder.id };
     await order.save();
 
-    // Optionally persist the address back to the user's profile for next time.
-    if (saveAddress) {
-      user.address = {
+    if (authUser && saveAddress) {
+      authUser.address = {
         line1: shipping.line1,
         line2: shipping.line2,
         city: shipping.city,
@@ -153,14 +171,15 @@ exports.createOrder = async (req, res) => {
         pincode: shipping.pincode,
         country: shipping.country,
       };
-      if (!user.phone) user.phone = shipping.phone;
-      await user.save();
+      if (!authUser.phone) authUser.phone = shipping.phone;
+      await authUser.save();
     }
 
     return res.status(201).json({
       success: true,
       data: {
         orderId: order._id,
+        confirmationToken,
         razorpayOrderId: rzpOrder.id,
         amount: rzpOrder.amount,
         currency: rzpOrder.currency,
@@ -175,7 +194,6 @@ exports.createOrder = async (req, res) => {
 };
 
 // POST /api/orders/verify
-// body: { orderId, razorpayPaymentId, razorpaySignature }
 exports.verifyOrder = async (req, res) => {
   try {
     const { orderId, razorpayPaymentId, razorpaySignature } = req.body;
@@ -183,12 +201,16 @@ exports.verifyOrder = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Missing payment fields' });
     }
 
-    const order = await Order.findOne({ _id: orderId, user: req.user.id });
+    const order = await Order.findById(orderId);
     if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
 
-    // Idempotent: if already paid with the same payment id, just succeed.
+    const authUser = req.user && req.user.role !== 'admin' ? req.user : null;
+
     if (order.status === 'paid' && order.razorpay?.paymentId === razorpayPaymentId) {
-      return res.status(200).json({ success: true, data: { orderId: order._id, status: 'paid' } });
+      return res.status(200).json({
+        success: true,
+        data: { orderId: order._id, status: 'paid', confirmationToken: order.confirmationToken },
+      });
     }
 
     const secret = process.env.RAZORPAY_KEY_SECRET;
@@ -213,9 +235,8 @@ exports.verifyOrder = async (req, res) => {
     order.paidAt = new Date();
     await order.save();
 
-    // Cart-mode orders clear the user's cart on successful payment.
-    if (order.source === 'cart') {
-      const user = await User.findById(req.user.id);
+    if (order.source === 'cart' && authUser) {
+      const user = await User.findById(authUser._id);
       if (user) {
         user.cart = [];
         await user.save();
@@ -224,8 +245,23 @@ exports.verifyOrder = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: { orderId: order._id, status: 'paid' },
+      data: { orderId: order._id, status: 'paid', confirmationToken: order.confirmationToken },
     });
+  } catch (err) {
+    return res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// GET /api/orders/confirmation/:id?token=...
+exports.getOrderConfirmation = async (req, res) => {
+  try {
+    const token = String(req.query.token || '').trim();
+    if (!token) {
+      return res.status(400).json({ success: false, error: 'token is required' });
+    }
+    const order = await Order.findOne({ _id: req.params.id, confirmationToken: token });
+    if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
+    return res.status(200).json({ success: true, data: order });
   } catch (err) {
     return res.status(400).json({ success: false, error: err.message });
   }
@@ -242,8 +278,6 @@ exports.getOrder = async (req, res) => {
   }
 };
 
-// GET /api/orders?status=paid|created|failed|cancelled&limit=20
-// Returns the current user's orders, newest first. Used by the "My Orders" page.
 exports.listMyOrders = async (req, res) => {
   try {
     const filter = { user: req.user.id };

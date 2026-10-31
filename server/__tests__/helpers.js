@@ -56,6 +56,7 @@ async function seedSampleProducts() {
 
 const sampleAddress = () => ({
   fullName: 'Radha Sharma',
+  email: 'radha.sharma@example.com',
   phone: '9876543210',
   line1: '12, Silver Lane',
   line2: 'Apt 5',

@@ -18,31 +18,47 @@ const OrderSuccess = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      requireAuth(navigate, location);
-    }
-  }, [authLoading, user, navigate, location]);
+  const confirmationToken = new URLSearchParams(location.search).get('token');
 
   useEffect(() => {
-    if (!user || !id) return;
+    if (!id) return;
     let cancelled = false;
+
     (async () => {
       try {
-        const res = await api(`/api/orders/${id}`);
-        if (!cancelled) setOrder(res.data);
+        if (user) {
+          const res = await api(`/api/orders/${id}`);
+          if (!cancelled) setOrder(res.data);
+          return;
+        }
+        if (confirmationToken) {
+          const res = await api(
+            `/api/orders/confirmation/${id}?token=${encodeURIComponent(confirmationToken)}`,
+            { auth: false }
+          );
+          if (!cancelled) setOrder(res.data);
+          return;
+        }
+        if (!authLoading && !user) {
+          requireAuth(navigate, location);
+        }
       } catch (err) {
         if (!cancelled) setError(err.message);
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, [user, id]);
+  }, [user, authLoading, id, confirmationToken, navigate, location]);
 
-  if (authLoading || !user || loading) {
+  if (authLoading || loading) {
+    return <div className="success-page"><div className="container">Loading...</div></div>;
+  }
+
+  if (!user && !confirmationToken && !loading) {
     return <div className="success-page"><div className="container">Loading...</div></div>;
   }
 
@@ -59,6 +75,9 @@ const OrderSuccess = () => {
   }
 
   const isPaid = order.status === 'paid';
+  const thankName =
+    order.shippingAddress?.fullName?.split(' ')[0] ||
+    (user?.firstName ? user.firstName : 'there');
 
   return (
     <div className="success-page">
@@ -77,7 +96,7 @@ const OrderSuccess = () => {
           <h1>{isPaid ? 'Order Confirmed' : 'Payment Pending'}</h1>
           <p className="success-subtitle">
             {isPaid
-              ? `Thank you, ${user.firstName}. Your order has been received and is being prepared.`
+              ? `Thank you, ${thankName}. Your order has been received and is being prepared.`
               : 'Your order is awaiting payment confirmation.'}
           </p>
 
@@ -118,6 +137,7 @@ const OrderSuccess = () => {
             <h3>Shipping To</h3>
             <p className="success-address">
               {order.shippingAddress.fullName}<br />
+              {order.shippingAddress.email}<br />
               {order.shippingAddress.line1}{order.shippingAddress.line2 ? `, ${order.shippingAddress.line2}` : ''}<br />
               {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.pincode}<br />
               {order.shippingAddress.country} · {order.shippingAddress.phone}
@@ -126,8 +146,14 @@ const OrderSuccess = () => {
 
           <div className="success-actions">
             <Link to="/category/collections" className="btn btn-primary">Continue Shopping</Link>
-            <Link to="/orders" className="btn-link">My Orders</Link>
-            <Link to="/profile" className="btn-link">View Profile</Link>
+            {user ? (
+              <>
+                <Link to="/orders" className="btn-link">My Orders</Link>
+                <Link to="/profile" className="btn-link">View Profile</Link>
+              </>
+            ) : (
+              <Link to="/contact" className="btn-link">Need help? Contact us</Link>
+            )}
           </div>
         </motion.div>
       </div>

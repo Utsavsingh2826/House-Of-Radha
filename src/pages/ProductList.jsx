@@ -1,10 +1,8 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { requireAuth } from '../lib/requireAuth';
 import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './ProductList.css';
 
@@ -38,8 +36,6 @@ const filterByRoute = (id, products) => {
 const ProductList = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { user } = useAuth();
   const { addToCart, loading: cartLoading } = useCart();
 
   const [allProducts, setAllProducts] = useState([]);
@@ -100,10 +96,6 @@ const ProductList = () => {
   const handleBuyNow = (e, sku) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) {
-      requireAuth(navigate, location, { action: 'buyNow', sku });
-      return;
-    }
     navigate(`/checkout?buyNow=${encodeURIComponent(sku)}&qty=1`);
   };
 

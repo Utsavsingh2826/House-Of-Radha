@@ -2,6 +2,27 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const AdminUser = require('../models/AdminUser');
 
+// Attach user when a valid Bearer token is present; continue as guest otherwise.
+exports.optionalProtect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+  if (!token) {
+    req.user = null;
+    return next();
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findById(decoded.id);
+    if (!user) user = await AdminUser.findById(decoded.id);
+    req.user = user || null;
+  } catch {
+    req.user = null;
+  }
+  return next();
+};
+
 // Protect routes
 exports.protect = async (req, res, next) => {
   let token;

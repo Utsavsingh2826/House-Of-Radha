@@ -31,6 +31,13 @@ const ShippingAddressSchema = new mongoose.Schema(
       match: [/^\d{6}$/, 'Please add a valid 6-digit pincode'],
     },
     country: { type: String, default: 'India', trim: true },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please add a valid email'],
+    },
   },
   { _id: false }
 );
@@ -40,9 +47,11 @@ const OrderSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      default: null,
       index: true,
     },
+    // Secret token returned at checkout so guests can view confirmation without login.
+    confirmationToken: { type: String, index: true },
     items: {
       type: [OrderItemSchema],
       validate: [(v) => Array.isArray(v) && v.length > 0, 'Order must have at least one item'],

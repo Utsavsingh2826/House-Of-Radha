@@ -21,6 +21,7 @@ const TARGET_EMAIL = 'tiwariaditya1810@gmail.com';
 
 const FALLBACK_ADDRESS = {
   fullName: 'Aditya Tiwari',
+  email: 'tiwariaditya1810@gmail.com',
   phone: '9876543210',
   line1: '12, Lotus Residency',
   line2: 'Sector 18',

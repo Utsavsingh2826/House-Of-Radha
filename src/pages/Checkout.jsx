@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { api } from '../lib/api';
 import { loadRazorpay } from '../lib/razorpay';
-import { requireAuth } from '../lib/requireAuth';
 import { getOptimizedImageUrl } from '../lib/cloudinary';
 import './Checkout.css';
 
@@ -12,6 +11,7 @@ const formatINR = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
 
 const emptyAddress = {
   fullName: '',
+  email: '',
   phone: '',
   line1: '',
   line2: '',
@@ -23,7 +23,7 @@ const emptyAddress = {
 
 const Checkout = () => {
   const { user, loading: authLoading } = useAuth();
-  const { items: cartItems, total: cartTotal, refresh } = useCart();
+  const { items: cartItems, total: cartTotal, refresh, clearCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,8 +32,6 @@ const Checkout = () => {
   const buyNowQty = Math.max(1, parseInt(params.get('qty') || '1', 10) || 1);
   const isBuyNow = Boolean(buyNowSku);
 
-  // For Buy Now, fetch the single product fresh from Mongo so we never rely on
-  // a stale frontend bundle. `null` = still loading, `false` = lookup failed.
   const [buyNowProduct, setBuyNowProduct] = useState(null);
   const [buyNowLoading, setBuyNowLoading] = useState(isBuyNow);
 
@@ -82,20 +80,12 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  // Auth guard.
-  useEffect(() => {
-    if (!authLoading && !user) {
-      requireAuth(navigate, location);
-    }
-  }, [authLoading, user, navigate, location]);
-
-  // Pre-fill from saved profile. Normalise phone/pincode in case the saved
-  // value had spaces or other formatting, so validation passes immediately.
   useEffect(() => {
     if (!user) return;
     setShipping((prev) => ({
       ...prev,
       fullName: prev.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      email: prev.email || user.email || '',
       phone:
         prev.phone ||
         String(user.phone || '').replace(/\D/g, '').slice(0, 10),
@@ -108,11 +98,10 @@ const Checkout = () => {
         String(user.address?.pincode || '').replace(/\D/g, '').slice(0, 6),
       country: prev.country || user.address?.country || 'India',
     }));
-    // Default "save as default" ON when there's no saved address yet.
     if (!user.address?.line1) setSaveAddress(true);
   }, [user]);
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return <div className="checkout-page"><div className="container">Loading...</div></div>;
   }
 
@@ -142,9 +131,6 @@ const Checkout = () => {
     );
   }
 
-  // Strip non-digits and cap length for phone/pincode so the visible value
-  // always matches what the regex validates against. Avoids the "I typed
-  // a space and got rejected" gotcha.
   const handleChange = (e) => {
     const { name, value } = e.target;
     let next = value;
@@ -158,6 +144,7 @@ const Checkout = () => {
 
   const validate = () => {
     if (!shipping.fullName.trim()) return 'Full name is required';
+    if (!/^\S+@\S+\.\S+$/.test(String(shipping.email).trim())) return 'Enter a valid email address';
     if (!/^\d{10}$/.test(shipping.phone))
       return 'Enter a valid 10-digit phone number';
     if (!shipping.line1.trim()) return 'Address line 1 is required';
@@ -177,16 +164,28 @@ const Checkout = () => {
     }
     setSubmitting(true);
 
+    const useAuth = Boolean(user);
+
     try {
       const body = {
         source: isBuyNow ? 'buyNow' : 'cart',
-        shippingAddress: shipping,
-        saveAddress,
+        shippingAddress: {
+          ...shipping,
+          email: String(shipping.email).trim().toLowerCase(),
+        },
+        saveAddress: user ? saveAddress : false,
       };
       if (isBuyNow) {
         body.items = [{ sku: buyNowSku, qty: buyNowQty }];
+      } else if (!user) {
+        body.items = cartItems.map((item) => ({ sku: item.sku, qty: item.qty }));
       }
-      const created = await api('/api/orders/create', { method: 'POST', body });
+
+      const created = await api('/api/orders/create', {
+        method: 'POST',
+        body,
+        auth: useAuth,
+      });
       const data = created.data;
 
       const Razorpay = await loadRazorpay();
@@ -199,7 +198,7 @@ const Checkout = () => {
         order_id: data.razorpayOrderId,
         prefill: {
           name: shipping.fullName,
-          email: user.email,
+          email: shipping.email,
           contact: shipping.phone,
         },
         notes: { dbOrderId: data.orderId },
@@ -208,14 +207,22 @@ const Checkout = () => {
           try {
             await api('/api/orders/verify', {
               method: 'POST',
+              auth: useAuth,
               body: {
                 orderId: data.orderId,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               },
             });
-            if (!isBuyNow) await refresh();
-            navigate(`/order/success/${data.orderId}`, { replace: true });
+            if (!isBuyNow) {
+              if (user) await refresh();
+              else await clearCart();
+            }
+            const token = data.confirmationToken;
+            navigate(
+              `/order/success/${data.orderId}${token ? `?token=${encodeURIComponent(token)}` : ''}`,
+              { replace: true }
+            );
           } catch (verifyErr) {
             setError(verifyErr.message || 'Payment verification failed');
             setSubmitting(false);
@@ -243,12 +250,20 @@ const Checkout = () => {
       <div className="container">
         <header className="checkout-header">
           <h1>Checkout</h1>
-          <p>{isBuyNow ? 'Express purchase' : `${cartItems.length} item${cartItems.length === 1 ? '' : 's'} in your bag`}</p>
+          <p>
+            {user ? null : 'Guest checkout · '}
+            {isBuyNow ? 'Express purchase' : `${cartItems.length} item${cartItems.length === 1 ? '' : 's'} in your bag`}
+          </p>
+          {!user && (
+            <p className="checkout-guest-hint">
+              Already have an account? <Link to="/login">Sign in</Link> to save your address.
+            </p>
+          )}
         </header>
 
         <div className="checkout-grid">
           <form className="checkout-form" onSubmit={handleSubmit} noValidate>
-            <h2>Shipping Address</h2>
+            <h2>Shipping &amp; contact</h2>
             {error && <p className="error-msg">{error}</p>}
 
             <div className="form-row">
@@ -262,19 +277,31 @@ const Checkout = () => {
                 />
               </label>
               <label>
-                <span>Phone</span>
+                <span>Email</span>
                 <input
-                  name="phone"
-                  value={shipping.phone}
+                  name="email"
+                  type="email"
+                  value={shipping.email}
                   onChange={handleChange}
-                  inputMode="numeric"
-                  pattern="[0-9]{10}"
-                  maxLength={10}
-                  placeholder="10-digit mobile"
+                  autoComplete="email"
                   required
                 />
               </label>
             </div>
+
+            <label>
+              <span>Phone</span>
+              <input
+                name="phone"
+                value={shipping.phone}
+                onChange={handleChange}
+                inputMode="numeric"
+                pattern="[0-9]{10}"
+                maxLength={10}
+                placeholder="10-digit mobile"
+                required
+              />
+            </label>
 
             <label>
               <span>Address Line 1</span>
@@ -315,14 +342,16 @@ const Checkout = () => {
               </label>
             </div>
 
-            <label className="save-address-checkbox">
-              <input
-                type="checkbox"
-                checked={saveAddress}
-                onChange={(e) => setSaveAddress(e.target.checked)}
-              />
-              <span>Save this as my default address for next time</span>
-            </label>
+            {user && (
+              <label className="save-address-checkbox">
+                <input
+                  type="checkbox"
+                  checked={saveAddress}
+                  onChange={(e) => setSaveAddress(e.target.checked)}
+                />
+                <span>Save this as my default address for next time</span>
+              </label>
+            )}
 
             <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
               {submitting ? 'Opening payment...' : `Place Order · ${formatINR(summaryTotal)}`}

@@ -30,9 +30,37 @@ describe('Orders API', () => {
   });
 
   describe('POST /api/orders/create', () => {
-    it('rejects when not logged in', async () => {
-      const res = await request(app).post('/api/orders/create').send({});
-      expect(res.status).toBe(401);
+    it('guest buyNow creates order without login', async () => {
+      const res = await request(app)
+        .post('/api/orders/create')
+        .send({
+          source: 'buyNow',
+          items: [{ sku: 'TEST-001', qty: 1 }],
+          shippingAddress: sampleAddress(),
+        });
+      expect(res.status).toBe(201);
+      expect(res.body.data.total).toBe(1000);
+      expect(res.body.data.confirmationToken).toBeTruthy();
+    });
+
+    it('guest cart-mode requires items in body', async () => {
+      const res = await request(app)
+        .post('/api/orders/create')
+        .send({ source: 'cart', shippingAddress: sampleAddress() });
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/items are required/i);
+    });
+
+    it('guest cart-mode with items succeeds', async () => {
+      const res = await request(app)
+        .post('/api/orders/create')
+        .send({
+          source: 'cart',
+          items: [{ sku: 'TEST-001', qty: 1 }, { sku: 'TEST-002', qty: 2 }],
+          shippingAddress: sampleAddress(),
+        });
+      expect(res.status).toBe(201);
+      expect(res.body.data.total).toBe(6000);
     });
 
     it('rejects empty cart in cart-mode', async () => {
@@ -165,6 +193,27 @@ describe('Orders API', () => {
           razorpayPaymentId: paymentId,
           razorpaySignature: sig,
         });
+      expect(res.status).toBe(200);
+      expect(res.body.data.status).toBe('paid');
+    });
+
+    it('guest verify succeeds without auth when signature is valid', async () => {
+      const create = await request(app)
+        .post('/api/orders/create')
+        .send({
+          source: 'buyNow',
+          items: [{ sku: 'TEST-001', qty: 1 }],
+          shippingAddress: sampleAddress(),
+        });
+      const order = create.body.data;
+      const paymentId = 'pay_GUEST123';
+      const sig = signature(order.razorpayOrderId, paymentId);
+
+      const res = await request(app).post('/api/orders/verify').send({
+        orderId: order.orderId,
+        razorpayPaymentId: paymentId,
+        razorpaySignature: sig,
+      });
       expect(res.status).toBe(200);
       expect(res.body.data.status).toBe('paid');
     });
