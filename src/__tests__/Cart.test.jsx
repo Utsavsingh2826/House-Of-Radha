@@ -66,7 +66,7 @@ describe('Cart page', () => {
     expect(screen.getByText(/Rs\. 4,500/)).toBeInTheDocument();
     expect(screen.queryByText(/GST/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Shipping/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/inclusive of taxes/i)).toBeInTheDocument();
+    expect(screen.getByText(/include taxes and duties for delivery in India/i)).toBeInTheDocument();
   });
 
   it('qty +/- triggers updateQty; remove triggers removeFromCart', async () => {

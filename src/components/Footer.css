@@ -73,6 +73,14 @@
   margin-bottom: 0.8rem;
 }
 
+.footer-contact a {
+  color: #999;
+}
+
+.footer-contact a:hover {
+  color: var(--text-light);
+}
+
 .footer-bottom {
   border-top: 1px solid #333;
   padding-top: var(--spacing-md);

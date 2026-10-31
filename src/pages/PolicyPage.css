@@ -1,0 +1,89 @@
+.policy-page {
+  padding-top: 120px;
+  padding-bottom: 5rem;
+  min-height: 70vh;
+}
+
+.policy-page .policy-header {
+  max-width: 720px;
+  margin-bottom: 2.5rem;
+}
+
+.policy-page .policy-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.policy-page .policy-intro {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: rgba(26, 42, 79, 0.75);
+}
+
+.policy-content {
+  max-width: 720px;
+}
+
+.policy-content section {
+  margin-bottom: 2.5rem;
+}
+
+.policy-content h2 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: var(--primary, #1a2a4f);
+}
+
+.policy-content p,
+.policy-content li {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(26, 42, 79, 0.78);
+  margin-bottom: 0.75rem;
+}
+
+.policy-content ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.policy-content a {
+  color: var(--primary, #1a2a4f);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-cards {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.contact-card {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-soft, #f8f6f2);
+  border-radius: 4px;
+}
+
+.contact-card h3 {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.contact-card p {
+  margin-bottom: 0.35rem;
+}
+
+.contact-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}

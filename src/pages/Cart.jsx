@@ -90,7 +90,11 @@ const Cart = () => {
                 <span>Total</span>
                 <span>{formatINR(total)}</span>
               </div>
-              <p className="summary-disclaimer">All prices are inclusive of taxes.</p>
+              <p className="summary-disclaimer">
+                Product prices include taxes and duties for delivery in India. International orders
+                may incur customs at delivery.{' '}
+                <Link to="/returns-refunds">Returns &amp; refunds</Link>
+              </p>
               <button
                 className="btn btn-primary w-full"
                 onClick={() => navigate('/checkout')}

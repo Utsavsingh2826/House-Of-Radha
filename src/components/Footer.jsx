@@ -28,8 +28,8 @@ const Footer = () => {
           <h3>Support</h3>
           <ul>
             <li><Link to="/orders">Orders</Link></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Shipping & Returns</a></li>
+            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/returns-refunds">Returns &amp; Refunds</Link></li>
             <li><a href="#">Care Guide</a></li>
             <li><a href="#">925 Hallmarking</a></li>
           </ul>
@@ -37,9 +37,14 @@ const Footer = () => {
 
         <div className="footer-contact">
           <h3>Visit Us</h3>
-          <p><span className="material-symbols-outlined">location_on</span> 123 Luxury Lane, Jewelry District</p>
-          <p><span className="material-symbols-outlined">call</span> +91 98765 43210</p>
-          <p><span className="material-symbols-outlined">mail</span> care@houseofradha.com</p>
+          <p>
+            <span className="material-symbols-outlined">call</span>{' '}
+            <a href="https://wa.me/917400181182">+91 7400 181 182</a>
+          </p>
+          <p>
+            <span className="material-symbols-outlined">mail</span>{' '}
+            <a href="mailto:support@houseofradha.com">support@houseofradha.com</a>
+          </p>
         </div>
       </div>
       <div className="footer-bottom container">

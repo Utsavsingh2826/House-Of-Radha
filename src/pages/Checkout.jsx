@@ -355,7 +355,11 @@ const Checkout = () => {
                 <span>Total</span>
                 <span>{formatINR(summaryTotal)}</span>
               </div>
-              <p className="summary-disclaimer">All prices are inclusive of taxes.</p>
+              <p className="summary-disclaimer">
+                Product prices include taxes and duties for delivery in India. International orders
+                may incur customs at delivery.{' '}
+                <Link to="/returns-refunds">Returns &amp; refunds</Link>
+              </p>
             </div>
           </aside>
         </div>
