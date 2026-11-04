@@ -22,24 +22,11 @@
 }
 
 .footer-logo-img {
-  height: 40px;
-  width: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
-}
-
-.footer-logo {
-  font-family: var(--font-serif);
-  letter-spacing: 0.15em;
-  color: var(--text-light);
-  font-size: 0.85rem;
-}
-
-.footer-tagline {
-  font-style: italic;
-  color: #ccc;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  height: auto;
+  width: min(100%, 240px);
+  max-height: 72px;
+  object-fit: contain;
+  display: block;
 }
 
 .footer-brand p {

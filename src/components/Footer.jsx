@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import horLogo from '../assets/images/hor-logo.svg';
+import horLogoDark from '../assets/images/hor-logo-dark.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -9,10 +9,12 @@ const Footer = () => {
       <div className="container footer-grid">
         <div className="footer-brand">
           <Link to="/" className="footer-logo-link">
-            <img src={horLogo} alt="" className="footer-logo-img" />
-            <span className="footer-logo">HOUSE OF RADHA</span>
+            <img
+              src={horLogoDark}
+              alt="House of Radha — Devotion meets eternity"
+              className="footer-logo-img"
+            />
           </Link>
-          <p className="footer-tagline">Devotion meets eternity</p>
           <p>
             Every piece of handcrafted jewellery will have 925 silver hallmarking. Quality and
             tradition in every sparkle.

@@ -47,17 +47,11 @@
 }
 
 .logo-hor-img {
-  height: 36px;
+  height: clamp(40px, 8vw, 52px);
   width: auto;
+  max-width: min(220px, 42vw);
   display: block;
-}
-
-.logo-hor-text {
-  font-family: var(--font-serif);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  color: var(--primary);
-  font-weight: 600;
+  object-fit: contain;
 }
 
 .nav-right {
@@ -190,8 +184,6 @@
     padding: 0.25rem 0 0 1rem;
   }
 
-  .logo-hor-text { display: none; }
-
   .user-name,
   .logout-text,
   .admin-nav-label { display: none; }
@@ -199,6 +191,9 @@
 
 @media (max-width: 480px) {
   .navbar { padding: 1rem 0; }
-  .logo-hor-img { height: 28px; }
+  .logo-hor-img {
+    height: 36px;
+    max-width: 160px;
+  }
   .nav-right { gap: 0.6rem; }
 }
