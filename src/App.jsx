@@ -10,6 +10,7 @@ import ProductDetail from './pages/ProductDetail';
 import BeforeWeMelt from './pages/BeforeWeMelt';
 import ReturnsRefunds from './pages/ReturnsRefunds';
 import Contact from './pages/Contact';
+import FaqSilver from './pages/FaqSilver';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
@@ -44,13 +45,21 @@ function App() {
                 <Route path="/before-we-melt" element={<BeforeWeMelt />} />
                 <Route path="/returns-refunds" element={<ReturnsRefunds />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/faq-silver" element={<FaqSilver />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order/success/:id" element={<OrderSuccess />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/adminNikanki" element={<AdminLogin />} />
-                <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <ProtectedRoute adminOnly={true}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
               </Routes>
             </main>
             <Footer />
