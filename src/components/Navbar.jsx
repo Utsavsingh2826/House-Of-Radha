@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import horLogoLight from '../assets/images/hor-logo-light.png';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -84,7 +83,7 @@ const Navbar = () => {
         </div>
 
         <Link to="/" className="logo logo-hor" aria-label="House of Radha home">
-          <img src={horLogoLight} alt="House of Radha — Devotion meets eternity" className="logo-hor-img" />
+          HOUSE OF RADHA
         </Link>
 
         <div className="nav-right">

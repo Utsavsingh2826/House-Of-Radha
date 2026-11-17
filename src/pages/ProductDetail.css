@@ -124,9 +124,9 @@
 }
 
 .pd-price {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a2a4f;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: rgba(26, 42, 79, 0.72);
 }
 
 .pd-description {
@@ -300,9 +300,9 @@
 }
 
 .pd-related-card .pd-related-price {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #1a2a4f;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(26, 42, 79, 0.72);
 }
 
 /* --- Responsive --- */

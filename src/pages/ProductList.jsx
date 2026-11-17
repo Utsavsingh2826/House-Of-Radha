@@ -52,10 +52,6 @@ const ProductList = () => {
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
-  useEffect(() => {
     let cancelled = false;
     setLoadingProducts(true);
     setFetchError(null);
@@ -129,7 +125,7 @@ const ProductList = () => {
         </div>
       </div>
 
-      <div className="container section">
+      <div className="container product-results">
         {loadingProducts ? (
           <p className="empty-state">Loading products...</p>
         ) : fetchError ? (

@@ -10,21 +10,10 @@ import { api } from '../lib/api';
 import './Home.css';
 import heroImg from '../assets/images/hero.png';
 import templeImg from '../assets/images/temple.png';
-import rakhiHeroImg from '../assets/images/rakhi-hero.png';
 import jewelryCloseupImg from '../assets/images/jewelry-closeup.png';
 import necklaceTempleImg from '../assets/images/necklace-temple.png';
 
 const STATIC_HERO_SLIDES = [
-  {
-    id: 'rakhi',
-    image: rakhiHeroImg,
-    heading: 'Iss Saal Bhai Ki Chandi Hai!!',
-    subheading: 'Shop Our Pure 925 Silver Rakhi Collection',
-    text: '10% off on first order.',
-    cta: 'Shop Rakhi Collection',
-    link: '/category/rakhi',
-    tone: 'default',
-  },
   {
     id: 'sister',
     image: heroImg,
@@ -277,22 +266,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="section rakhi-spotlight">
-        <div className="container rakhi-spotlight-inner">
-          <div className="rakhi-spotlight-copy">
-            <p className="hallmark-tag">House of Radha</p>
-            <h2>Rakhis that last forever for bonds that are eternal.</h2>
-            <p className="rakhi-spotlight-lead">Pure 92.5% silver Rakhis</p>
-            <p className="rakhi-spotlight-stamp">Well stamped with 925 silver</p>
-            <Link to="/category/rakhi" className="btn btn-primary">
-              Shop Rakhi Collections
-            </Link>
-          </div>
-          <div className="rakhi-spotlight-visual">
-            <img src={rakhiHeroImg} alt="Pure silver Rakhi collection" />
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
